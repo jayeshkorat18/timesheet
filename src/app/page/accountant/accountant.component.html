@@ -1,0 +1,45 @@
+<!-- <ng2-smart-table [settings]="settings" [source]="data"></ng2-smart-table> -->
+<div class="card">
+  <div class="card-header">Accountant List</div>
+  <div class="card-body">
+      <h4 class="card-title"><button type="button" routerLink="/page/accountant/add-accountant" class="btn btn-primary login-btn">Add Accountant</button></h4>
+      
+      <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
+        <thead>
+          <tr>
+            <th class="nosort">Email</th>
+            <th class="nosort">Username</th>
+            <th class="text-center nosort">Status</th>
+            <th class="text-center nosort">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let person of persons">
+            
+            <td >{{ person.email }}</td>
+            <td>{{ person.username }}</td>
+            
+            <td class="text-center">
+              <ui-switch [(checked)]="person.status" (change)="openModal(template,person,$event)" defaultBgColor="red"></ui-switch></td>
+            <td class="text-center">
+                <!-- <a (click)="gotoEdit(person)"  ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> -->
+                <button (click)="gotoEdit(person)" class="btn btn-secondary btn-sm detail-btn">Reset Password</button>
+                <!-- [routerLink]="['/page/accountant/edit-accountant/'+person.id]" -->
+                <!-- <i (click)="open(content)" class="fa fa-trash-o" aria-hidden="true"></i> -->
+                <!-- <button (click)="openUserdetail(userdetail,person)" class="btn btn-success btn-sm detail-btn">Userdetail</button> -->
+            </td>
+          </tr>
+        </tbody>
+        </table>
+  </div>
+</div>
+<ng-template #template>
+  <div class="modal-body text-center">
+    <p>Are you sure you want to change status?</p>
+    <button type="button" class="btn btn-default" (click)="confirm()" >Yes</button>
+    <button type="button" class="btn btn-primary" (click)="decline()" >No</button>
+  </div>
+</ng-template>
+<ng-template #userdetail>
+        <app-userdetail [accountid]="account_id" (onClose)="closeDetail"></app-userdetail>    
+</ng-template>

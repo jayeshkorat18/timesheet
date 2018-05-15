@@ -1,0 +1,80 @@
+<div class="card">
+  <div class="card-header">User Detail</div>
+  <div class="card-body">
+    <form [formGroup]="userdetail" (submit)="AddUserdetail()">
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="form-group row">
+            <label for="exampleInputEmail1" class="col-sm-2 col-form-label">Phone</label>
+            <div class="col-sm-10">
+              <input type="text" formControlName="phone" class="form-control" placeholder="Phone">
+              <!-- <app-field-error-display [control]="userdetail.controls.phone" Name="phone" [submitAttempt]="submitAttempt"></app-field-error-display> -->
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="exampleInputEmail1" class="col-sm-2 col-form-label">Phone 2</label>
+            <div class="col-sm-10">
+              <input type="text" formControlName="emergency_phone" class="form-control" placeholder="Emergency Phone">
+              <!-- <app-field-error-display [control]="userdetail.controls.phone" Name="phone" [submitAttempt]="submitAttempt"></app-field-error-display> -->
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="exampleInputEmail1" class="col-sm-2 col-form-label">DOB</label>
+            <div class="col-sm-10">
+              <input type="text" formControlName="dob" class="form-control" placeholder="DOB">
+              <!-- <app-field-error-display [control]="userdetail.controls.phone" Name="phone" [submitAttempt]="submitAttempt"></app-field-error-display> -->
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="exampleInputEmail1" class="col-sm-2 col-form-label">Street</label>
+            <div class="col-sm-10">
+              <input type="text" formControlName="address_street" class="form-control" placeholder="Street">
+              <!-- <app-field-error-display [control]="userdetail.controls.phone" Name="phone" [submitAttempt]="submitAttempt"></app-field-error-display> -->
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="form-group row">
+            <label for="exampleInputEmail1" class="col-sm-2 col-form-label">Street 2</label>
+            <div class="col-sm-10">
+              <input type="text" formControlName="address_street_2" class="form-control" placeholder="Street 2">
+              <!-- <app-field-error-display [control]="userdetail.controls.phone" Name="phone" [submitAttempt]="submitAttempt"></app-field-error-display> -->
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="exampleInputEmail1" class="col-sm-2 col-form-label">City</label>
+            <div class="col-sm-10">
+              <input type="text" formControlName="address_city" class="form-control" placeholder="City">
+              <!-- <app-field-error-display [control]="userdetail.controls.phone" Name="phone" [submitAttempt]="submitAttempt"></app-field-error-display> -->
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="exampleInputEmail1" class="col-sm-2 col-form-label">State</label>
+            <div class="col-sm-10">
+              <input type="text" formControlName="address_state" class="form-control" placeholder="State">
+              <!-- <app-field-error-display [control]="userdetail.controls.phone" Name="phone" [submitAttempt]="submitAttempt"></app-field-error-display> -->
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="exampleInputEmail1" class="col-sm-2 col-form-label">Country</label>
+            <div class="col-sm-10">
+                <input type="text" formControlName="address_country" class="form-control" placeholder="State">
+              <!-- <select formControlName="address_country" class="form-control">
+                <option value="">Select Country</option>
+                <option value="United State">United State</option>
+                <option value="India">India</option>
+              </select> -->
+              <!-- <app-field-error-display [control]="userdetail.controls.phone" Name="phone" [submitAttempt]="submitAttempt"></app-field-error-display> -->
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-12">
+          <button type="submit" class="btn btn-primary">Save</button>
+          <button type="button" (click)="closeModal()" class="btn btn-default">cancel</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<!-- <button type="button" (click)="adduserdetail()" class="btn btn-primary">Submit</button> -->

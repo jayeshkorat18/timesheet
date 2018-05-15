@@ -1,0 +1,35 @@
+<div class="card">
+  <div class="card-header">Client List</div>
+  <div class="card-body">
+      <h4 class="card-title"><button type="button" routerLink="/page/client/add-client" class="btn btn-primary login-btn">Add Client</button></h4>
+      <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
+        <thead>
+          <tr>
+            <th class="nosort">Client name</th>
+            <th class="nosort">website</th>
+            <th class="nosort">Address</th>
+            <th class="nosort">city</th>
+            <th class="nosort">state</th>
+            <th class="text-center nosort">country</th>
+            <th class="text-center nosort">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let client of clients">
+            
+            <td>{{ client.client_name }}</td>
+            <td>{{ client.client_website }}</td>
+            <td>{{ client.client_address_street }} {{ client.client_address_street_2 }}</td>
+            <td>{{ client.client_address_city }}</td>
+            <td>{{ client.client_address_state }}</td>
+            <td>{{ client.client_address_country }}</td>
+            
+            <td class="text-center">
+                <a (click)="gotoEdit(client)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                <!-- [routerLink]="['/page/client/edit-client/'+client.id]" -->
+            </td>
+          </tr>
+        </tbody>
+        </table>
+  </div>
+</div>

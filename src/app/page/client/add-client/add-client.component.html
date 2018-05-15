@@ -1,0 +1,78 @@
+<div class="card">
+  <div class="card-header">{{mode}}</div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-lg-6">
+        <form [formGroup]="client" (submit)="addclient()">
+          <div class="form-group row required">
+            <label class="col-sm-3 col-form-label">Client Name<span class="required">*</span></label>
+            <div class="col-sm-9">
+              <input type="text" formControlName="client_name" class="form-control" placeholder="Client Name">
+              <app-field-error-display [control]="client.controls.client_name" Name="client_name" [submitAttempt]="submitAttempt"></app-field-error-display>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label">Website<span class="required">*</span></label>
+            <div class="col-sm-9">
+              <input type="text" formControlName="client_website" class="form-control" placeholder="Website" >
+              <app-field-error-display [control]="client.controls.client_website" Name="client_website" [submitAttempt]="submitAttempt"></app-field-error-display>
+            </div>
+          </div> 
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label">Address1<span class="required">*</span></label>
+            <div class="col-sm-9">
+              <input type="text" formControlName="client_address_street" class="form-control" placeholder="Adddress1" >
+              <app-field-error-display [control]="client.controls.client_address_street" Name="client_address_street" [submitAttempt]="submitAttempt"></app-field-error-display>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label">Address2</label>
+            <div class="col-sm-9">
+              <input type="text" formControlName="client_address_street_2" class="form-control" placeholder="Adddress2" >
+              <app-field-error-display [control]="client.controls.client_address_street_2" Name="client_address_street_2" [submitAttempt]="submitAttempt"></app-field-error-display>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label">City<span class="required">*</span></label>
+            <div class="col-sm-9">
+              <input type="text" formControlName="client_address_city" class="form-control" placeholder="City">
+              <app-field-error-display [control]="client.controls.client_address_city" Name="client_address_city" [submitAttempt]="submitAttempt"></app-field-error-display>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label">State<span class="required">*</span></label>
+            <div class="col-sm-9">
+              <input type="text" formControlName="client_address_state" class="form-control" placeholder="State">
+              <app-field-error-display [control]="client.controls.client_address_state" Name="client_address_state" [submitAttempt]="submitAttempt"></app-field-error-display>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label">Country<span class="required">*</span></label>
+            <div class="col-sm-9">
+              <input type="text" formControlName="client_address_country" class="form-control" placeholder="Country">
+              <app-field-error-display [control]="client.controls.client_address_country" Name="client_address_country" [submitAttempt]="submitAttempt"></app-field-error-display>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label"></label>
+            <div class="col-sm-9" style="padding-left: 33px;">
+              <input type="checkbox" id="checkbox2" formControlName="isBillable" class="form-control form-check-input" style="width: 12px;zoom: 1.4;">
+              <label for="checkbox2">isBillable </label>
+            </div>
+          </div>
+
+          <!-- <div class="form-group row">
+            <label class="col-sm-3 col-form-label">Status</label>
+            <div class="col-sm-9">
+              <select formControlName="status" class="form-control">
+                <option value="true">Enable</option>
+                <option value="false">Disable</option>
+              </select>
+            </div>
+          </div> -->
+          <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

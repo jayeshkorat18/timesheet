@@ -1,0 +1,27 @@
+.login-page{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: auto;    
+    padding: 3em;
+    background-image: url('assets/images/1.jpg');
+    background-size: cover; 
+    .login-title{
+        margin-bottom: 20px;
+        text-align: center;
+    }
+    .card{
+        padding: 20px
+    }
+    .login-content {
+        .col-md-4{
+            margin: 0 auto;
+            padding-top: 6%; 
+        }
+    }
+    .login-btn{
+        width: 100%;
+    }
+}

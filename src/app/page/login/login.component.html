@@ -1,0 +1,25 @@
+<div class="login-page">
+  <div class="login-content">
+    <div class="col-md-4">
+      <div class="card card-default">
+        <!-- <img src="assets/images/logo.png" width="150px" class="user-avatar" /> -->
+        <h2 class="login-title"> Login</h2>
+        <form [formGroup]="login"> 
+          <div class="form-content">
+            <div class="form-group">
+              <input type="text" formControlName="username" [class.invalid]="!login.controls.username.valid && submitAttempt && (login.controls.username.dirty || submitAttempt)" class="form-control input-underline input-lg" placeholder="Username">
+              <app-field-error-display [control]="login.controls.username" Name="username" [submitAttempt]="submitAttempt"></app-field-error-display>
+            </div>
+            <div class="form-group">
+              <input type="password" formControlName="password" [class.invalid]="!login.controls.password.valid && submitAttempt && (login.controls.password.dirty || submitAttempt)" class="form-control input-underline input-lg" placeholder="Password">
+              <app-field-error-display [control]="login.controls.password" Name="password" [submitAttempt]="submitAttempt"></app-field-error-display>
+              <a [routerLink]="['/forgot-password']">Forgot password?</a>
+            </div>
+            
+          </div>
+          <button (click)="onSubmit()" class="btn btn-primary login-btn">Login</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,86 @@
+<div class="row">
+  <div class="col-lg-6" *ngIf="mode=='Add Accountant'">
+    <div class="card">
+      <div class="card-header">{{mode}}</div>
+      <div class="card-body">
+
+        <form [formGroup]="accountant" (submit)="addAccountant()">
+          <div class="form-group row required">
+            <label for="exampleInputEmail1" class="col-sm-3 col-form-label">Email
+              <span class="required">*</span>
+            </label>
+            <div class="col-sm-9">
+              <input type="email" formControlName="email" class="form-control" placeholder="Email">
+              <app-field-error-display [control]="accountant.controls.email" Name="email" [submitAttempt]="submitAttempt"></app-field-error-display>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="exampleInputEmail1" class="col-sm-3 col-form-label">Username
+              <span class="required">*</span>
+            </label>
+            <div class="col-sm-9">
+              <input type="text" formControlName="username" class="form-control" placeholder="Username">
+              <app-field-error-display [control]="accountant.controls.username" Name="username" [submitAttempt]="submitAttempt"></app-field-error-display>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="exampleInputPassword1" class="col-sm-3 col-form-label">Password
+              <span class="required">*</span>
+            </label>
+            <div class="col-sm-9">
+              <input type="password" formControlName="password" class="form-control" placeholder="Password">
+              <app-field-error-display [control]="accountant.controls.password" Name="password" [submitAttempt]="submitAttempt"></app-field-error-display>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="exampleInputPassword1" class="col-sm-3 col-form-label">Confirm Password
+              <span class="required">*</span>
+            </label>
+            <div class="col-sm-9">
+              <input type="password" formControlName="passwordConfirm" class="form-control" placeholder="Password">
+              <app-field-error-display [control]="accountant.controls.passwordConfirm" Name="passwordConfirm" [submitAttempt]="submitAttempt"></app-field-error-display>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="exampleInputPassword1" class="col-sm-3 col-form-label">Status</label>
+            <div class="col-sm-9">
+              <select formControlName="status" class="form-control">
+                <option value="true">Enable</option>
+                <option value="false">Disable</option>
+              </select>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-8" *ngIf="mode=='Edit Accountant'">
+    <div class="card">
+      <div class="card-header">Reset password for accountant: <b> {{paramData.username}} ({{paramData.email}})</b></div>
+      <div class="card-body">
+        <form [formGroup]="resetpassword" (submit)="ChangePassword()">
+          <div class="form-group row">
+            <label for="exampleInputPassword1" class="col-sm-3 col-form-label">New Password
+              <span class="required">*</span>
+            </label>
+            <div class="col-sm-9">
+              <input type="password" formControlName="password" class="form-control" placeholder="New Password">
+              <app-field-error-display [control]="resetpassword.controls.password" Name="password" [submitAttempt]="submitAttempt"></app-field-error-display>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="exampleInputPassword1" class="col-sm-3 col-form-label">Confirm Password
+              <span class="required">*</span>
+            </label>
+            <div class="col-sm-9">
+              <input type="password" formControlName="passwordConfirm" class="form-control" placeholder="Confirm Password">
+              <app-field-error-display [control]="resetpassword.controls.passwordConfirm" Name="passwordConfirm" [submitAttempt]="submitAttempt"></app-field-error-display>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

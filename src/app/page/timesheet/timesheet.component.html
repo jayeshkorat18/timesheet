@@ -1,0 +1,101 @@
+
+<div class="card">
+  <div class="card-header">Timesheet List</div>
+  <div class="card-body">
+      <h4 *ngIf="userDetail.user.myrole_id==2" class="card-title">
+        <button  class="btn btn-primary" routerLink="/page/timesheet/add-timesheet" >Add Timesheet</button>
+      </h4>
+      <!-- <div class="form-group row">
+          <label class=" col-form-label">Candidate: </label>
+          <div class="select-dropdown">
+            <select [(ngModel)]="account_id" (change)="TimesheetList(account_id)" class="form-control">
+              <option *ngFor="let candidate of candidateList" [value]="candidate.id">{{candidate.username}}</option>
+            </select>
+          </div>
+        </div> -->
+      <div *ngIf="timesheet.length==0 && isNoData">
+        No data found
+      </div>
+      <div *ngIf="!isNoData">
+      <table  datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
+        <thead>
+          <tr>
+            <th class="nosort">Date</th>
+            <th class="nosort">Regular Hours</th>
+            <th class="text-center nosort">Overtime</th>
+            <th class="text-center nosort">Document</th>
+            <th class="text-center nosort">Status</th>
+            <th *ngIf="userDetail.user.myrole_id!=2" class="text-center nosort">Billed</th>
+            <th *ngIf="userDetail.user.myrole_id!=2" class="text-center nosort">Paid</th>
+            <!-- <th class="text-center nosort">Action</th> -->
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let person of timesheet">
+            
+            <td>{{ person.date | date:'shortDate' }}</td>
+            <td>{{ person.regular_hours }}</td>
+            <td>{{ person.overtime_hours }}</td>
+            <td class="text-center">
+              <a href="{{ person.timesheet_image_name }}" target="_blank">Document Link</a>
+            </td>
+            <td class="text-center">
+              <div *ngIf="userDetail.user.myrole_id==2">
+                <span *ngIf="person.status==1">Submited</span>
+                <span *ngIf="person.status==2">Approved</span>
+                <span *ngIf="person.status==3">Reject</span>
+              </div>
+              <div *ngIf="userDetail.user.myrole_id!=2">
+                <button *ngIf="person.status==1 || person.status==3"  (click)="openModalStatusApprove(approve,person)" class="btn btn-success btn-sm detail-btn">Approve</button>
+                <button *ngIf="person.status==1 || person.status==2" (click)="openModalStatusReject(reject,person)" class="btn btn-danger btn-sm detail-btn">Reject</button>
+              </div>
+            </td>
+            <td class="text-center" *ngIf="userDetail.user.myrole_id!=2">
+              <button *ngIf="!person.isBilled" (click)="openModal(template,person)" class="btn btn-success btn-sm detail-btn">Mark as Billed</button>
+              <span *ngIf="person.isBilled">Billed</span>
+            </td>
+            <td class="text-center" (click)="openModalPaid(paid,person)" *ngIf="userDetail.user.myrole_id!=2">
+              <button *ngIf="!person.isPaidByClient" class="btn btn-success btn-sm detail-btn">Mark as Paid</button>
+              <span *ngIf="person.isPaidByClient">Paid</span>
+            </td>
+
+            <!-- <td class="text-center"> -->
+                <!-- <a [routerLink]="['/page/candidate/edit-candidate/'+person.id]" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> -->
+                <!-- <i (click)="open(content)" class="fa fa-trash-o" aria-hidden="true"></i> -->
+                <!-- <button (click)="openUserdetail(userdetail,person)" class="btn btn-success btn-sm detail-btn">Userdetail</button> -->
+            <!-- </td> -->
+          </tr>
+        </tbody>
+        </table>
+  
+      </div>
+        </div>
+</div>
+<ng-template #template>
+  <div class="modal-body text-center">
+    <p>Are you sure you want to mark as billed</p>
+    <button type="button" class="btn btn-primary" (click)="confirm()" >Yes</button>
+    <button type="button" class="btn btn-default" (click)="decline()" >No</button>
+  </div>
+</ng-template>
+<ng-template #paid>
+    <div class="modal-body text-center">
+      <p>Are you sure you want to mark as paid</p>
+      <button type="button" class="btn btn-primary" (click)="paidconfirm()" >Yes</button>
+      <button type="button" class="btn btn-default" (click)="decline()" >No</button>
+    </div>
+  </ng-template>
+  <ng-template #approve>
+      <div class="modal-body text-center">
+        <p>Are you sure you want to approve timesheet</p>
+        <button type="button" class="btn btn-primary" (click)="approveStatus()" >Yes</button>
+        <button type="button" class="btn btn-default" (click)="decline()" >No</button>
+      </div>
+    </ng-template>
+    <ng-template #reject>
+        <div class="modal-body text-center">
+          <p>Are you sure you want to reject</p>
+          <button type="button" class="btn btn-primary" (click)="reject()" >Yes</button>
+          <button type="button" class="btn btn-default" (click)="decline()" >No</button>
+        </div>
+      </ng-template>
