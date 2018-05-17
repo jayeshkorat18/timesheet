@@ -209,4 +209,14 @@ export class WebserviceService {
       return error;
     });
   }
+
+  //Add timesheet
+  AddTimesheet(Parameter) {
+    var URL = this.BASE_URL + 'timesheets/saveTimesheets';
+    return this.webservicehandler.Post(URL, Parameter).map(data => {
+      return data;
+    }, error => {
+      return error;
+    });
+  }
 }

@@ -31,6 +31,7 @@ export class TimesheetComponent implements OnInit {
   userDetail:any;
   candidateList:any;
   isNoData:boolean=false;
+  timesheetDetail:any;
 
   constructor(public router: Router, public activatedRoute: ActivatedRoute,private modalService: BsModalService, public common: CommonService, public service: WebserviceService) {
     this.userDetail=JSON.parse(localStorage.getItem('UserData'))
@@ -41,7 +42,7 @@ export class TimesheetComponent implements OnInit {
         this.account_id=params.id;
        // this.AccountantDetail(params.id);
       } else {
-        this.account_id=32;
+        this.account_id=this.userDetail.user.id;
       }
     })
    }
@@ -104,7 +105,7 @@ export class TimesheetComponent implements OnInit {
     let tmp=[];
     _.forEach(self.timesheet, function(value) {
         if(value.id==self.detail.id){
-          value.status=!self.detail.status;
+          value.isBilled=!self.detail.isBilled;
           self.MarkAsBilled(value);
         }
         tmp.push(value)
@@ -149,7 +150,7 @@ export class TimesheetComponent implements OnInit {
     let tmp=[];
     _.forEach(self.timesheet, function(value) {
         if(value.id==self.detail.id){
-          value.status=!self.detail.status;
+          value.isPaidByClient=!self.detail.isPaidByClient;
           self.MarkAsPaid(value);
         }
         tmp.push(value)
@@ -167,7 +168,7 @@ export class TimesheetComponent implements OnInit {
     this.common.ShowSpinner()
     this.service.MarkAsPaid({timesheetId:param.id,isPaid:true}).subscribe(result=>{
       console.log(result)
-      this.common.showToast("Status update successfuly","Status","success")
+      //this.common.showToast("Status update successfuly","Status","success")
       this.common.HideSpinner();
     },error=>{
       console.log(error)
@@ -201,7 +202,7 @@ export class TimesheetComponent implements OnInit {
     this.detail=data;
     this.modalRef = this.modalService.show(template,this.config);
   }
-  reject(){
+  rejectStatus(){
     let self=this;
     let tmp=[];
     _.forEach(self.timesheet, function(value) {
@@ -228,6 +229,28 @@ export class TimesheetComponent implements OnInit {
       console.log(error)
       this.common.HideSpinner();
       this.common.showToast("Error in update status","Status","danger")
+    })
+  }
+
+  //Change hours by candidate
+  openModalChangeHours(template: TemplateRef<any>, data) {
+    console.log(data)
+    this.timesheetDetail=data;
+    this.modalRef = this.modalService.show(template,this.config);
+  }
+
+  SaveTimesheet(){
+    this.common.ShowSpinner();
+    this.service.AddTimesheet({"timesheetList":[this.timesheetDetail]}).subscribe(result=>{
+      console.log("Success add timesheet")
+      //console.log(result);
+      this.modalRef.hide();
+      this.common.showToast('Timesheet update successfully','Sucess','success');
+      this.common.HideSpinner();
+      //console.log(result)
+    },error=>{
+      console.log(error)
+      this.common.HideSpinner();
     })
   }
 }

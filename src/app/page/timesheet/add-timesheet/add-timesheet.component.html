@@ -5,109 +5,118 @@
   <div class="card-body">
     <div class="row">
       <div class="col-lg-3">
-        <button type="button" class="btn btn-success ">Previous week</button>
+        <button type="button" (click)="previousWeek()" class="btn btn-success ">Previous week</button>
       </div>
       <div class="col-lg-6 text-center">
-        Weekending: 03/18/2018
+        Weekending: {{endOfWeek | date:'MM/dd/yyyy'}}
       </div>
       <div class="col-lg-3 text-right">
-        <button type="button" class="btn btn-success">Next week</button>
+        <button type="button" (click)="nextWeek()" class="btn btn-success">Next week</button>
       </div>
     </div>
-    <div class="row margin-top-30">
-      <div class="col-lg-3 text-right">
+    <form [formGroup]="timesheet" (submit)="testsubmit(timesheet)">
+      <div class="row margin-top-30">
+        <div class="col-lg-3 text-right">
+
+        </div>
+        <div class="col-lg-1 text-center">
+          Mon
+        </div>
+        <div class="col-lg-1 text-center">
+          Tue
+        </div>
+        <div class="col-lg-1 text-center">
+          Wed
+        </div>
+        <div class="col-lg-1 text-center">
+          Thu
+        </div>
+        <div class="col-lg-1 text-center">
+          Fir
+        </div>
+        <div class="col-lg-1 text-center">
+          Sat
+        </div>
+        <div class="col-lg-1 text-center">
+          Sun
+        </div>
 
       </div>
-      <div class="col-lg-1 text-center">
-        Mon
+      <div class="row margin-top-15">
+        <div class="col-lg-3 text-right">
+          Regular Hours
+        </div>
+        <div class="col-lg-1">
+          <input type="text" formControlName="mon" class="form-control" placeholder="Hour">
+        </div>
+        <div class="col-lg-1">
+          <input type="text" formControlName="tue" class="form-control" placeholder="Hour">
+        </div>
+        <div class="col-lg-1">
+          <input type="text" formControlName="wed" class="form-control" placeholder="Hour">
+        </div>
+        <div class="col-lg-1">
+          <input type="text" formControlName="thu" class="form-control" placeholder="Hour">
+        </div>
+        <div class="col-lg-1">
+          <input type="text" formControlName="fri" class="form-control" placeholder="Hour">
+        </div>
+        <div class="col-lg-1">
+          <input type="text" formControlName="sat" class="form-control" placeholder="Hour">
+        </div>
+        <div class="col-lg-1">
+          <input type="text" formControlName="sun" class="form-control" placeholder="Hour">
+        </div>
       </div>
-      <div class="col-lg-1 text-center">
-        Tue
+      <div class="row margin-top-15">
+        <div class="col-lg-3 text-right">
+          Overtime Hours
+        </div>
+        <div class="col-lg-1">
+          <input type="text" formControlName="mono" class="form-control" placeholder="Hour">
+        </div>
+        <div class="col-lg-1">
+          <input type="text" formControlName="tueo" class="form-control" placeholder="Hour">
+        </div>
+        <div class="col-lg-1">
+          <input type="text" formControlName="wedo" class="form-control" placeholder="Hour">
+        </div>
+        <div class="col-lg-1">
+          <input type="text" formControlName="thuo" class="form-control" placeholder="Hour">
+        </div>
+        <div class="col-lg-1">
+          <input type="text" formControlName="frio" class="form-control" placeholder="Hour">
+        </div>
+        <div class="col-lg-1">
+          <input type="text" formControlName="sato" class="form-control" placeholder="Hour">
+        </div>
+        <div class="col-lg-1">
+          <input type="text" formControlName="suno" class="form-control" placeholder="Hour">
+        </div>
       </div>
-      <div class="col-lg-1 text-center">
-        Wed
-      </div>
-      <div class="col-lg-1 text-center">
-        Thu
-      </div>
-      <div class="col-lg-1 text-center">
-        Fir
-      </div>
-      <div class="col-lg-1 text-center">
-        Sat
-      </div>
-      <div class="col-lg-1 text-center">
-        Sun
-      </div>
+      <div class="row margin-top-15">
+        <div class="col-lg-3 text-right">
 
-    </div>
-    <div class="row margin-top-15">
-      <div class="col-lg-3 text-right">
-        Regular Hours
+        </div>
+        <div class="col-lg-2">
+          <button type="button" class="btn btn-outline-info btn-sm">Upload support docs</button>
+        </div>
       </div>
-      <div class="col-lg-1">
-        <input type="text" class="form-control" placeholder="Hour">
-      </div>
-      <div class="col-lg-1">
-        <input type="text" class="form-control" placeholder="Hour">
-      </div>
-      <div class="col-lg-1">
-        <input type="text" class="form-control" placeholder="Hour">
-      </div>
-      <div class="col-lg-1">
-        <input type="text" class="form-control" placeholder="Hour">
-      </div>
-      <div class="col-lg-1">
-        <input type="text" class="form-control" placeholder="Hour">
-      </div>
-      <div class="col-lg-1">
-        <input type="text" class="form-control" placeholder="Hour">
-      </div>
-      <div class="col-lg-1">
-        <input type="text" class="form-control" placeholder="Hour">
-      </div>
-    </div>
-    <div class="row margin-top-15">
-      <div class="col-lg-3 text-right">
-        Overtime Hours
-      </div>
-      <div class="col-lg-1">
-        <input type="text" class="form-control" placeholder="Hour">
-      </div>
-      <div class="col-lg-1">
-        <input type="text" class="form-control" placeholder="Hour">
-      </div>
-      <div class="col-lg-1">
-        <input type="text" class="form-control" placeholder="Hour">
-      </div>
-      <div class="col-lg-1">
-        <input type="text" class="form-control" placeholder="Hour">
-      </div>
-      <div class="col-lg-1">
-        <input type="text" class="form-control" placeholder="Hour">
-      </div>
-      <div class="col-lg-1">
-        <input type="text" class="form-control" placeholder="Hour">
-      </div>
-      <div class="col-lg-1">
-        <input type="text" class="form-control" placeholder="Hour">
-      </div>
-    </div>
-    <div class="row margin-top-15">
-      <div class="col-lg-3 text-right">
+      <div class="row margin-top-15">
+        <div class="col-lg-3 text-right">
 
+        </div>
+        <div class="col-lg-2">
+          <button type="submit" class="btn btn-success">Save</button>
+        </div>
       </div>
-      <div class="col-lg-2">
-        <button type="button" class="btn btn-success btn-sm">Upload support docs</button>
-      </div>
-    </div>
-    <div class="row margin-top-15">
-      <div class="col-lg-3 text-right">
-
-      </div>
-      <div class="col-lg-2">
-        <button type="button" class="btn btn-primary">Save</button>
-      </div>
-    </div>
+    </form>
   </div>
 </div>
+<ng-template #template>
+  <div class="modal-body text-center">
+    <h5>Your timesheet data added as per below:</h5>
+    <p *ngFor="let x of resultData">{{x}}</p>
+    <button type="button" class="btn btn-primary" (click)="decline()">OK</button>
+  </div>
+</ng-template>

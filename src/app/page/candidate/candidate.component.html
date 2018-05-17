@@ -1,7 +1,7 @@
 <div class="card">
   <div class="card-header">Candidate List</div>
   <div class="card-body">
-      <h4 class="card-title"><button type="button" routerLink="/page/candidate/add-candidate" class="btn btn-primary login-btn">Add Candidate</button></h4>
+      <h4 class="card-title"><button type="button" routerLink="/page/candidate/add-candidate" class="btn btn-success login-btn">Add Candidate</button></h4>
       <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
         <thead>
           <tr>
@@ -23,10 +23,10 @@
                 <!-- <a  (click)="gotoEdit(person)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> -->
                 <!-- [routerLink]="['/page/candidate/edit-candidate/'+person.id]" -->
                 <!-- <i (click)="open(content)" class="fa fa-trash-o" aria-hidden="true"></i> -->
-                <button (click)="gotoEdit(person)" class="btn btn-secondary btn-sm detail-btn">Reset Password</button>
-                <button (click)="openUserdetail(userdetail,person)" class="btn btn-info btn-sm detail-btn">Userdetail</button>
-                <button (click)="openAssignModal(assignproject,person)" class="btn btn-success btn-sm detail-btn">Assign Project</button>
-                <button (click)="gotoTimesheet(person)" class="btn btn-warning btn-sm detail-btn">Timesheet</button>
+                <button (click)="gotoEdit(person)" class="btn btn-outline-secondary btn-sm detail-btn">Reset Password</button>
+                <button (click)="openUserdetail(userdetail,person)" class="btn btn-outline-info btn-sm detail-btn">Userdetail</button>
+                <button (click)="openAssignModal(assignproject,person)" class="btn btn-outline-primary btn-sm detail-btn">Assign Project</button>
+                <button (click)="gotoTimesheet(person)" class="btn btn-outline-warning btn-sm detail-btn">Timesheet</button>
             </td>
           </tr>
         </tbody>
@@ -36,9 +36,9 @@
 <ng-template #template>
   <div class="modal-body text-center">
     <p>Are you sure you want to change status?</p>
-    <button type="button" class="btn btn-default" (click)="decline()" >No</button>
-    <button type="button" class="btn btn-primary" (click)="confirm()" >Yes</button>
     
+    <button type="button" class="btn btn-success" (click)="confirm()" >Yes</button>
+    <button type="button" class="btn btn-outline-secondary" (click)="decline()" >No</button>
   </div>
 </ng-template>
 <ng-template #assignproject>
@@ -52,8 +52,8 @@
         </select>
       </div>
     </div>
-    <button type="button" class="btn btn-primary" (click)="Save(client_id)" >Save</button>
-    <button type="button" class="btn btn-default" (click)="Close()" >Cancel</button>
+    <button type="button" class="btn btn-success" (click)="Save(client_id)" >Save</button>
+    <button type="button" class="btn btn-outline-secondary" (click)="Close()" >Cancel</button>
   </div>
 </ng-template>
 <ng-template #userdetail>

@@ -1,11 +1,10 @@
-
 <div class="card">
   <div class="card-header">Timesheet List</div>
   <div class="card-body">
-      <h4 *ngIf="userDetail.user.myrole_id==2" class="card-title">
-        <button  class="btn btn-primary" routerLink="/page/timesheet/add-timesheet" >Add Timesheet</button>
-      </h4>
-      <!-- <div class="form-group row">
+    <h4 *ngIf="userDetail.user.myrole_id==2" class="card-title">
+      <button class="btn btn-primary" routerLink="/page/timesheet/add-timesheet">Add Timesheet</button>
+    </h4>
+    <!-- <div class="form-group row">
           <label class=" col-form-label">Candidate: </label>
           <div class="select-dropdown">
             <select [(ngModel)]="account_id" (change)="TimesheetList(account_id)" class="form-control">
@@ -13,29 +12,29 @@
             </select>
           </div>
         </div> -->
-      <div *ngIf="timesheet.length==0 && isNoData">
-        No data found
-      </div>
-      <div *ngIf="!isNoData">
-      <table  datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
+    <div *ngIf="timesheet.length==0 && isNoData">
+      No data found
+    </div>
+    <div *ngIf="!isNoData">
+      <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
         <thead>
           <tr>
-            <th class="nosort">Date</th>
-            <th class="nosort">Regular Hours</th>
+            <th class="text-center nosort">Date</th>
+            <th class="text-center nosort">Regular Hours</th>
             <th class="text-center nosort">Overtime</th>
             <th class="text-center nosort">Document</th>
             <th class="text-center nosort">Status</th>
             <th *ngIf="userDetail.user.myrole_id!=2" class="text-center nosort">Billed</th>
             <th *ngIf="userDetail.user.myrole_id!=2" class="text-center nosort">Paid</th>
-            <!-- <th class="text-center nosort">Action</th> -->
+            <th *ngIf="userDetail.user.myrole_id==2" class="text-center nosort">Action</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let person of timesheet">
-            
-            <td>{{ person.date | date:'shortDate' }}</td>
-            <td>{{ person.regular_hours }}</td>
-            <td>{{ person.overtime_hours }}</td>
+
+            <td class="text-center">{{ person.date | date:'MM/dd/yyyy' }}</td>
+            <td class="text-center">{{ person.regular_hours }}</td>
+            <td class="text-center">{{ person.overtime_hours }}</td>
             <td class="text-center">
               <a href="{{ person.timesheet_image_name }}" target="_blank">Document Link</a>
             </td>
@@ -46,56 +45,73 @@
                 <span *ngIf="person.status==3">Reject</span>
               </div>
               <div *ngIf="userDetail.user.myrole_id!=2">
-                <button *ngIf="person.status==1 || person.status==3"  (click)="openModalStatusApprove(approve,person)" class="btn btn-success btn-sm detail-btn">Approve</button>
-                <button *ngIf="person.status==1 || person.status==2" (click)="openModalStatusReject(reject,person)" class="btn btn-danger btn-sm detail-btn">Reject</button>
+                <button *ngIf="person.status==1 || person.status==3" (click)="openModalStatusApprove(approve,person)" class="btn btn-outline-success btn-sm detail-btn">Approve</button>
+                <button *ngIf="person.status==1 || person.status==2" (click)="openModalStatusReject(reject,person)" class="btn btn-outline-danger btn-sm detail-btn">Reject</button>
               </div>
             </td>
             <td class="text-center" *ngIf="userDetail.user.myrole_id!=2">
-              <button *ngIf="!person.isBilled" (click)="openModal(template,person)" class="btn btn-success btn-sm detail-btn">Mark as Billed</button>
+              <button *ngIf="!person.isBilled" (click)="openModal(template,person)" class="btn btn-outline-success btn-sm detail-btn">Mark as Billed</button>
               <span *ngIf="person.isBilled">Billed</span>
             </td>
             <td class="text-center" (click)="openModalPaid(paid,person)" *ngIf="userDetail.user.myrole_id!=2">
-              <button *ngIf="!person.isPaidByClient" class="btn btn-success btn-sm detail-btn">Mark as Paid</button>
+              <button *ngIf="!person.isPaidByClient" class="btn btn-outline-success btn-sm detail-btn">Mark as Paid</button>
               <span *ngIf="person.isPaidByClient">Paid</span>
             </td>
 
-            <!-- <td class="text-center"> -->
-                <!-- <a [routerLink]="['/page/candidate/edit-candidate/'+person.id]" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> -->
-                <!-- <i (click)="open(content)" class="fa fa-trash-o" aria-hidden="true"></i> -->
-                <!-- <button (click)="openUserdetail(userdetail,person)" class="btn btn-success btn-sm detail-btn">Userdetail</button> -->
-            <!-- </td> -->
+            <td *ngIf="person.status==2" class="text-center">
+            <!-- <a [routerLink]="['/page/candidate/edit-candidate/'+person.id]" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> -->
+            <!-- <i (click)="open(content)" class="fa fa-trash-o" aria-hidden="true"></i> -->
+            <button  (click)="openModalChangeHours(changehours,person)" class="btn btn-outline-success btn-sm detail-btn">Update</button>
+            </td>
           </tr>
         </tbody>
-        </table>
-  
-      </div>
-        </div>
+      </table>
+
+    </div>
+  </div>
 </div>
 <ng-template #template>
   <div class="modal-body text-center">
     <p>Are you sure you want to mark as billed</p>
-    <button type="button" class="btn btn-primary" (click)="confirm()" >Yes</button>
-    <button type="button" class="btn btn-default" (click)="decline()" >No</button>
+    <button type="button" class="btn btn-success" (click)="confirm()">Yes</button>
+    <button type="button" class="btn btn-outline-secondary" (click)="decline()">No</button>
   </div>
 </ng-template>
 <ng-template #paid>
-    <div class="modal-body text-center">
-      <p>Are you sure you want to mark as paid</p>
-      <button type="button" class="btn btn-primary" (click)="paidconfirm()" >Yes</button>
-      <button type="button" class="btn btn-default" (click)="decline()" >No</button>
-    </div>
-  </ng-template>
-  <ng-template #approve>
-      <div class="modal-body text-center">
-        <p>Are you sure you want to approve timesheet</p>
-        <button type="button" class="btn btn-primary" (click)="approveStatus()" >Yes</button>
-        <button type="button" class="btn btn-default" (click)="decline()" >No</button>
+  <div class="modal-body text-center">
+    <p>Are you sure you want to mark as paid</p>
+    <button type="button" class="btn btn-success" (click)="paidconfirm()">Yes</button>
+    <button type="button" class="btn btn-outline-secondary" (click)="decline()">No</button>
+  </div>
+</ng-template>
+<ng-template #approve>
+  <div class="modal-body text-center">
+    <p>Are you sure you want to approve timesheet</p>
+    <button type="button" class="btn btn-success" (click)="approveStatus()">Yes</button>
+    <button type="button" class="btn btn-outline-secondary" (click)="decline()">No</button>
+  </div>
+</ng-template>
+<ng-template #reject>
+  <div class="modal-body text-center">
+    <p>Are you sure you want to reject</p>
+    <button type="button" class="btn btn-success" (click)="rejectStatus()">Yes</button>
+    <button type="button" class="btn btn-outline-secondary" (click)="decline()">No</button>
+  </div>
+</ng-template>
+<ng-template #changehours>
+  <div class="modal-body ">
+    <p>Change timesheet hours for date : <b>{{timesheetDetail.date  | date:'MM/dd/yyyy'}}</b></p>
+    <div class="form-group row">
+      <div class="col-sm-6">
+        <label>Regular Hours</label>
+        <input [(ngModel)]="timesheetDetail.regular_hours" type="text" class="form-control">
       </div>
-    </ng-template>
-    <ng-template #reject>
-        <div class="modal-body text-center">
-          <p>Are you sure you want to reject</p>
-          <button type="button" class="btn btn-primary" (click)="reject()" >Yes</button>
-          <button type="button" class="btn btn-default" (click)="decline()" >No</button>
+      <div class="col-sm-6">
+          <label>Overtime Hours</label>
+          <input type="text" [(ngModel)]="timesheetDetail.overtime_hours" class="form-control">
         </div>
-      </ng-template>
+    </div>
+    <button type="button" class="btn btn-success" (click)="SaveTimesheet()" >Save</button>
+    <button type="button" class="btn btn-outline-secondary" (click)="decline()" >Cancel</button>
+  </div>
+</ng-template>
