@@ -173,6 +173,25 @@ export class WebserviceService {
       return error;
     });
   }
+  //Start project
+  EndProject(Parameter) {
+    var URL = this.BASE_URL + 'project/updateProject';
+    return this.webservicehandler.Post(URL, Parameter).map(data => {
+      return data;
+    }, error => {
+      return error;
+    });
+  }
+  //Get client detail by candidate id
+  GetClientDetailByCandidate(candidateId) {
+    var URL = this.BASE_URL + '/account/getCandidateClient?candidateId='+candidateId;
+    return this.webservicehandler.Get(URL).map(data => {
+      return data.json();
+    }, error => {
+      return error;
+    });
+  }
+
   //---------------------------------Timesheet service-----------------------------------------------//
   //Get Timesheet list
   TimesheetListById(account_id) {
@@ -184,26 +203,26 @@ export class WebserviceService {
     });
   }
 
-  MarkAsBilled(Parameter){
+  MarkAsBilled(Parameter) {
     var URL = this.BASE_URL + 'timesheets/markAsBilled';
-    return this.webservicehandler.PostFormData(URL, Parameter).map(data => {
+    return this.webservicehandler.Post(URL, Parameter).map(data => {
       return data;
     }, error => {
       return error;
     });
   }
 
-  MarkAsPaid(Parameter){
+  MarkAsPaid(Parameter) {
     var URL = this.BASE_URL + 'timesheets/markAsPaidByClient';
-    return this.webservicehandler.PostFormData(URL, Parameter).map(data => {
+    return this.webservicehandler.Post(URL, Parameter).map(data => {
       return data;
     }, error => {
       return error;
     });
   }
-  ChangeTimesheetStatus(Parameter){
+  ChangeTimesheetStatus(Parameter) {
     var URL = this.BASE_URL + 'timesheets/updateStatus';
-    return this.webservicehandler.PostFormData(URL, Parameter).map(data => {
+    return this.webservicehandler.Post(URL, Parameter).map(data => {
       return data;
     }, error => {
       return error;

@@ -1,6 +1,7 @@
 import { Component, OnInit, Input,Output,EventEmitter } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
+import { NgbDateParserFormatter  } from '@ng-bootstrap/ng-bootstrap';
 import { CommonService } from '../../shared/service/common.service';
 import { WebserviceService } from '../../shared/service/webservice.service'
 
@@ -9,14 +10,16 @@ import { WebserviceService } from '../../shared/service/webservice.service'
   templateUrl: './userdetail.component.html',
   styleUrls: ['./userdetail.component.scss']
 })
+
 export class UserdetailComponent implements OnInit {
   @Input() accountid:any;
   public userdetail: FormGroup;
   public detail:any;
   public submitAttempt: boolean;
   @Output() onCloseBack: EventEmitter<any> = new EventEmitter();
-
-  constructor(public router: Router, public activatedRoute: ActivatedRoute, private fb: FormBuilder, public service: WebserviceService, public common: CommonService) { 
+  model:any=new Date();
+  maxDate:any;
+  constructor(public router: Router,public parserDate:NgbDateParserFormatter, public activatedRoute: ActivatedRoute, private fb: FormBuilder, public service: WebserviceService, public common: CommonService) { 
 
     this.userdetail = fb.group({
       phone: [''],
@@ -32,18 +35,23 @@ export class UserdetailComponent implements OnInit {
 
   ngOnInit() {
     console.log("account_id:"+this.accountid);
+    this.maxDate = {year: new Date().getFullYear(), month: new Date().getMonth(), day: new Date().getDate()};
     this.GetUserDetailById();
   }
   closeModal(){
     this.onCloseBack.next();
   }
+  
   GetUserDetailById(){
     this.common.ShowSpinner();
     this.service.GetUserDetailById(this.accountid).subscribe(result=>{
       console.log("GetUserDetailById")
       console.log(result)
       this.detail=result;
+      
       if(result.length>0){
+        let cdate=new Date(result[0].dob)
+        result[0].dob = { month: cdate.getMonth() + 1, day: cdate.getDate(),year: cdate.getFullYear()};
         this.userdetail.patchValue(result[0]);
       }
       console.log(this.userdetail)
@@ -51,6 +59,8 @@ export class UserdetailComponent implements OnInit {
     },error=>{
       console.log(error);
       this.common.HideSpinner();
+      this.closeModal();
+      this.common.showToast("Error in getting user detail","Error","error");
     })
   }
 

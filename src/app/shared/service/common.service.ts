@@ -60,10 +60,10 @@ export class CommonService {
 
   //Get date formate
   formatDate(date) {
-    var day = date.getDate()>9?date.getDate():'0'+date.getDate();
+    var day = date.getDate()>9?date.getDate()-1:'0'+(date.getDate()-1);
     var monthIndex = date.getMonth()>8? (parseInt(date.getMonth())+1) : '0'+ (parseInt(date.getMonth())+1);
     var year = date.getFullYear();
   
-    return day + '/' + monthIndex + '/' + year;
+    return monthIndex + '/' + day + '/' + year;
   }
 }

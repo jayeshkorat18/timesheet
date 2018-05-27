@@ -1,59 +1,110 @@
 <div class="card">
   <div class="card-header">Candidate List</div>
   <div class="card-body">
-      <h4 class="card-title"><button type="button" routerLink="/page/candidate/add-candidate" class="btn btn-success login-btn">Add Candidate</button></h4>
-      <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
-        <thead>
-          <tr>
-            <th class="nosort">Email</th>
-            <th class="nosort">Username</th>
-            <th class="text-center nosort">Status</th>
-            <th class="text-center nosort">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let person of persons">
-            
-            <td>{{ person.email }}</td>
-            <td>{{ person.username }}</td>
-            
-            <td class="text-center">
-                <ui-switch [(checked)]="person.status" (change)="openModal(template,person,$event)" defaultBgColor="red"></ui-switch></td>
-            <td class="text-center">
-                <!-- <a  (click)="gotoEdit(person)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> -->
-                <!-- [routerLink]="['/page/candidate/edit-candidate/'+person.id]" -->
-                <!-- <i (click)="open(content)" class="fa fa-trash-o" aria-hidden="true"></i> -->
-                <button (click)="gotoEdit(person)" class="btn btn-outline-secondary btn-sm detail-btn">Reset Password</button>
-                <button (click)="openUserdetail(userdetail,person)" class="btn btn-outline-info btn-sm detail-btn">Userdetail</button>
-                <button (click)="openAssignModal(assignproject,person)" class="btn btn-outline-primary btn-sm detail-btn">Assign Project</button>
-                <button (click)="gotoTimesheet(person)" class="btn btn-outline-warning btn-sm detail-btn">Timesheet</button>
-            </td>
-          </tr>
-        </tbody>
-        </table>
+    <h4 class="card-title">
+      <button type="button" routerLink="/page/candidate/add-candidate" class="btn btn-success login-btn">Add Candidate</button>
+    </h4>
+    <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
+      <thead>
+        <tr>
+          <th class="nosort">Email</th>
+          <th class="nosort">Username</th>
+          <th class="text-center nosort">Status</th>
+          <th class="text-center nosort">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let person of persons">
+
+          <td>{{ person.email }}</td>
+          <td>{{ person.username }}</td>
+
+          <td class="text-center">
+            <ui-switch [(checked)]="person.status" (change)="openModal(template,person,$event)" defaultBgColor="red"></ui-switch>
+          </td>
+          <td class="text-center">
+            <!-- <a  (click)="gotoEdit(person)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> -->
+            <!-- [routerLink]="['/page/candidate/edit-candidate/'+person.id]" -->
+            <!-- <i (click)="open(content)" class="fa fa-trash-o" aria-hidden="true"></i> -->
+            <button (click)="gotoEdit(person)" class="btn btn-outline-danger btn-sm detail-btn">Reset Password</button>
+            <button (click)="openUserdetail(userdetail,person)" class="btn btn-outline-info btn-sm detail-btn">Userdetail</button>
+            <button *ngIf="!person.candidateOnProject" (click)="openAssignModal(assignproject,person)" class="btn btn-outline-primary btn-sm detail-btn">Assign Project</button>
+            <button *ngIf="person.candidateOnProject" (click)="openProjectDetailModal(projectdetail,person)" class="btn btn-outline-secondary btn-sm detail-btn">Project Detail</button>
+            <button (click)="gotoTimesheet(person)" class="btn btn-outline-warning btn-sm detail-btn">Timesheet</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </div>
 <ng-template #template>
   <div class="modal-body text-center">
     <p>Are you sure you want to change status?</p>
-    
-    <button type="button" class="btn btn-success" (click)="confirm()" >Yes</button>
-    <button type="button" class="btn btn-outline-secondary" (click)="decline()" >No</button>
+
+    <button type="button" class="btn btn-success" (click)="confirm()">Yes</button>
+    <button type="button" class="btn btn-outline-secondary" (click)="decline()">No</button>
   </div>
 </ng-template>
 <ng-template #assignproject>
   <div class="modal-body ">
-    <p>Select Client to assign candidate: <b>{{candidateDetail.username}}</b></p>
+    <p>Select Client to assign candidate:
+      <b>{{candidateDetail.username}}</b>
+    </p>
     <div class="form-group row">
       <div class="col-sm-12">
         <select [(ngModel)]="client_id" class="form-control">
           <option value="">Select Client</option>
-          <option *ngFor="let client of clientsList" [value]="client.id" >{{client.client_name}}</option>
+          <option *ngFor="let client of clientsList" [value]="client.id">{{client.client_name}}</option>
         </select>
       </div>
     </div>
-    <button type="button" class="btn btn-success" (click)="Save(client_id)" >Save</button>
-    <button type="button" class="btn btn-outline-secondary" (click)="Close()" >Cancel</button>
+    <button type="button" class="btn btn-success" (click)="Save(client_id)">Save</button>
+    <button type="button" class="btn btn-outline-secondary" (click)="Close()">Cancel</button>
+  </div>
+</ng-template>
+<ng-template #projectdetail>
+  <div class="modal-body ">
+    <div class="row">
+      <div class="col-md-4">
+        <b>Client Name:</b>
+      </div>
+      <div class="col-md-8">{{clientDetail.clientName}}</div>
+    </div>
+    <div class="row">
+      <div class="col-md-4">
+        <b>Address:</b>
+      </div>
+      <div class="col-md-8">{{clientDetail.clientStreet}} {{clientDetail.clientStreet2}}</div>
+    </div>
+    <div class="row">
+      <div class="col-md-4">
+        <b>City:</b>
+      </div>
+      <div class="col-md-8">{{clientDetail.clientCity}}</div>
+    </div>
+    <div class="row">
+      <div class="col-md-4">
+        <b>State:</b>
+      </div>
+      <div class="col-md-8">{{clientDetail.clientState}}</div>
+    </div>
+    <div class="row">
+      <div class="col-md-4">
+        <b>Country:</b>
+      </div>
+      <div class="col-md-8">{{clientDetail.clientCountry}}</div>
+    </div>
+
+    <hr>
+    <div class="form-group row">
+      <div class="col-sm-12">
+        <label for="exampleInputEmail1" class="">End Date
+        </label>
+        <input type="text" class="form-control" placeholder="End date">
+      </div>
+    </div>
+    <button type="button" class="btn btn-success" (click)="UpdateProject(clientDetail.clientId,clientDetail.candidateId)">Save</button>
+    <button type="button" class="btn btn-outline-secondary" (click)="Close()">Close</button>
   </div>
 </ng-template>
 <ng-template #userdetail>

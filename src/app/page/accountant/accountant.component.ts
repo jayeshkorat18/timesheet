@@ -1,4 +1,4 @@
-import { Component, OnInit,Input,EventEmitter, TemplateRef } from '@angular/core';
+import { Component, OnInit,Input,EventEmitter, ViewChild,TemplateRef } from '@angular/core';
 import { Router, ActivatedRoute,Params } from '@angular/router';
 import { UiSwitchModule } from 'ngx-toggle-switch';
 import { BsModalService } from 'ngx-bootstrap/modal';
@@ -6,6 +6,7 @@ import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import * as _ from 'lodash';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/map';
+import { DataTableDirective } from 'angular-datatables';
 
 import { CommonService } from '../../shared/service/common.service';
 import { WebserviceService } from '../../shared/service/webservice.service';
@@ -28,10 +29,9 @@ export class AccountantComponent implements OnInit {
   persons: any = [];
   dtTrigger: Subject<any> = new Subject();
   detail:any;
-  //account_id:number;
-  //public closeDetail: Function;
-  
-  //@Input() onSuggest:any;
+  @ViewChild(DataTableDirective)
+  dtElement: DataTableDirective;
+
   constructor(public router: Router,private modalService: BsModalService, public common: CommonService, public service: WebserviceService) { }
   
   ngOnInit(): void {
@@ -44,13 +44,8 @@ export class AccountantComponent implements OnInit {
       ]
     };
     this.AccountantList();
-//    this.closeDetail = this.closeModal.bind(this);
   }
   
-  // closeModal(){
-  //   console.log("Callback");
-  //   this.modalRef.hide();
-  // }
   //Get List of accountant
   AccountantList() {
     this.common.ShowSpinner();
@@ -61,22 +56,7 @@ export class AccountantComponent implements OnInit {
       this.common.HideSpinner();
     }, error => {
       console.log(error);
-      //this.persons = [{ email: 'jayesh@gmail.com', username: 'jayesh', status: true, id: 1 }, { email: 'jayesh2@gmail.com', username: 'jayesh2', status: true, id: 2 }]
-      //this.dtTrigger.next();
       this.common.HideSpinner();
-    })
-  }
-
-  ChangeStatus(data) {
-    this.common.ShowSpinner()
-    this.service.ChangeStatus({emailVerify:data.email,status:data.status}).subscribe(result=>{
-      //console.log(result);
-      this.common.showToast("Status update successfuly","Status","success")
-      this.common.HideSpinner();
-    },error=>{
-      console.log(error);
-      this.common.HideSpinner();
-      this.common.showToast("Error in update status","Status","danger")
     })
   }
 
@@ -87,31 +67,40 @@ export class AccountantComponent implements OnInit {
     this.detail=data;
     this.modalRef = this.modalService.show(template,this.config);
   }
-  // openUserdetail(template: TemplateRef<any>,data) {
-  //   //this.detail=data;
-  //   this.account_id=data.id;
-  //   console.log(data);
-  //   let config={
-  //     class: 'modal-large'
-  //   };
-  //   this.modalRef = this.modalService.show(template,config);
-  // }
+
   confirm(): void {
     let self=this;
     let tmp=[];
+    let data;
     _.forEach(self.persons, function(value) {
         if(value.id==self.detail.id){
           value.status=!self.detail.status;
-          self.ChangeStatus(value);
+          data=value;
         }
         tmp.push(value)
     })
     
-    this.persons=[];
-    setTimeout(function(){
-      self.persons = _.sortBy(tmp, [function(o) { return o.email; }]);
-    },10)
+    this.common.ShowSpinner()
+    this.service.ChangeStatus({emailVerify:data.email,status:data.status}).subscribe(result=>{
+      this.common.showToast("Status update successfuly","Status","success")
+      this.common.HideSpinner();
+    },error=>{
+      this.reloadTable(this.persons);
+      console.log(error);
+      this.common.HideSpinner();
+      this.common.showToast("Error in update status","Status","danger")
+    })
     this.modalRef.hide();
+  }
+  reloadTable(data){
+    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+      // Destroy the table first
+      dtInstance.destroy();
+      // Switch
+      this.persons = data;
+      // Call the dtTrigger to rerender again
+      this.dtTrigger.next();
+    });
   }
 
   decline(): void {

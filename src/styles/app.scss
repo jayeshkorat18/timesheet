@@ -70,3 +70,15 @@ span.required {
 .modal-large{
     max-width: 90% !important;
 }
+.form-control:focus{
+    border-color: #00b94a !important;
+    box-shadow: 0 0 0 0.1rem rgba(0, 185, 74, 0.32) !important;
+}
+.dropdown-item.active, .dropdown-item:active{
+    background-color: #00b94a !important;
+}
+
+
+
+
+

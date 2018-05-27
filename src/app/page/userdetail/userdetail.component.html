@@ -1,4 +1,4 @@
-<div class="card">
+<div class="card" >
   <div class="card-header">User Detail</div>
   <div class="card-body">
     <form [formGroup]="userdetail" (submit)="AddUserdetail()">
@@ -22,8 +22,12 @@
           <div class="form-group row">
             <label for="exampleInputEmail1" class="col-sm-2 col-form-label">DOB</label>
             <div class="col-sm-10">
-              <input type="text" formControlName="dob" class="form-control" placeholder="DOB">
+              <input type="text" formControlName="dob" autoClose=true  [maxDate]="maxDate" [(ngModel)]="model" ngbDatepicker #d="ngbDatepicker" class="form-control" placeholder="DOB">
               <!-- <app-field-error-display [control]="userdetail.controls.phone" Name="phone" [submitAttempt]="submitAttempt"></app-field-error-display> -->
+              <button class="input-group-addon calender-btn" (click)="d.toggle()" type="button">
+                <!-- <img src="img/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;"/> -->
+                <span class="fa fa-calendar"></span>
+            </button>
             </div>
           </div>
           <div class="form-group row">
@@ -70,8 +74,8 @@
           </div>
         </div>
         <div class="col-lg-12">
-          <button type="submit" class="btn btn-primary">Save</button>
-          <button type="button" (click)="closeModal()" class="btn btn-default">cancel</button>
+          <button type="submit" class="btn btn-success">Save</button>
+          <button type="button" (click)="closeModal()" class="btn btn-outline-secondary">cancel</button>
         </div>
       </div>
     </form>

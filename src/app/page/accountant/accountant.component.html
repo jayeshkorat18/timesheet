@@ -23,7 +23,7 @@
               <ui-switch [(checked)]="person.status" (change)="openModal(template,person,$event)" defaultBgColor="red"></ui-switch></td>
             <td class="text-center">
                 <!-- <a (click)="gotoEdit(person)"  ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> -->
-                <button (click)="gotoEdit(person)" class="btn btn-outline-secondary btn-sm detail-btn">Reset Password</button>
+                <button (click)="gotoEdit(person)" class="btn btn-outline-danger btn-sm detail-btn">Reset Password</button>
                 <!-- [routerLink]="['/page/accountant/edit-accountant/'+person.id]" -->
                 <!-- <i (click)="open(content)" class="fa fa-trash-o" aria-hidden="true"></i> -->
                 <!-- <button (click)="openUserdetail(userdetail,person)" class="btn btn-success btn-sm detail-btn">Userdetail</button> -->

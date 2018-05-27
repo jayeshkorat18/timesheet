@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { DataTablesModule } from 'angular-datatables';
 import { UiSwitchModule } from 'ngx-toggle-switch';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { LimitToDirective } from './../../shared/directive/LimitToDirective';
 
 import { SharedModule} from '../../shared.module';
 import { TimesheetComponent } from './timesheet.component';
@@ -24,6 +25,6 @@ export const routes = [
     UiSwitchModule,
     SharedModule
   ],
-  declarations: [TimesheetComponent, AddTimesheetComponent]
+  declarations: [TimesheetComponent, AddTimesheetComponent,LimitToDirective]
 })
 export class TimesheetModule { }

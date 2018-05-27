@@ -1,4 +1,4 @@
-import { Component, OnInit,TemplateRef,ViewChild } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
@@ -15,8 +15,8 @@ import { WebserviceService } from '../../../shared/service/webservice.service';
   styleUrls: ['./add-timesheet.component.scss']
 })
 export class AddTimesheetComponent implements OnInit {
-  userDetail:any;
-  @ViewChild('template') tamplate:TemplateRef<any>
+  userDetail: any;
+  @ViewChild('template') tamplate: TemplateRef<any>
   timesheet: FormGroup;
   startOfWeek = moment().startOf('isoWeek');
   endOfWeek = moment().endOf('isoWeek');
@@ -26,10 +26,10 @@ export class AddTimesheetComponent implements OnInit {
     ignoreBackdropClick: true,
     class: 'modal-md'
   };
-  resultData:any;
-   
-  constructor(private router: Router,public formBuilder: FormBuilder,private modalService: BsModalService,public common: CommonService, public service: WebserviceService) {
-    this.userDetail=JSON.parse(localStorage.getItem('UserData'))
+  resultData: any;
+
+  constructor(private router: Router, public formBuilder: FormBuilder, private modalService: BsModalService, public common: CommonService, public service: WebserviceService) {
+    this.userDetail = JSON.parse(localStorage.getItem('UserData'))
     this.timesheet = formBuilder.group({
       mon: [''],
       tue: [''],
@@ -95,39 +95,104 @@ export class AddTimesheetComponent implements OnInit {
       }
       let date = moment(day.toDate()).format('MM/DD/YYYY')
       requestData.push({
-        status:1,
-        status_updatedby_id:this.userDetail.user.id,
-        date: date, 
+        status: 1,
+        status_updatedby_id: this.userDetail.user.id,
+        date: date,
         regular_hours: rhours,
         overtime_hours: ohours,
-        timesheet_image_name:'image',
-        client_id:1,
-        account_id:this.userDetail.user.id })
+        timesheet_image_name: 'image',
+        client_id: 1,
+        account_id: this.userDetail.user.id
+      })
 
       day = day.clone().add(1, 'd');
     }
+
     //console.log(days);
     console.log(requestData);
     this.common.ShowSpinner();
-    this.service.AddTimesheet({"timesheetList":requestData}).subscribe(result=>{
+    this.service.AddTimesheet({ "timesheetList": requestData }).subscribe(result => {
       console.log("Success add timesheet")
       // let msg='';
       // result.forEach(value => {
       //   msg+=value+'';
       // });
-      this.resultData=result
+      this.resultData = result
       this.openModal(this.tamplate)
       //this.common.showToast('msg','Sucess','success');
       this.router.navigate(['page/timesheet']);
       this.common.HideSpinner();
       console.log(result)
-    },error=>{
+    }, error => {
       console.log(error)
       this.common.HideSpinner();
     })
   }
+
+  validateValue(day) {
+    switch (day) {
+      case 'mon':
+        if (this.timesheet.value.mon == 9)
+          this.timesheet.patchValue({ mon: '' })
+        break;
+      case 'tue':
+        if (this.timesheet.value.tue == 9)
+          this.timesheet.patchValue({ tue: '' })
+        break;
+      case 'wed':
+        if (this.timesheet.value.wed == 9)
+          this.timesheet.patchValue({ wed: '' })
+        break;
+      case 'thu':
+        if (this.timesheet.value.thu == 9)
+          this.timesheet.patchValue({ thu: '' })
+        break;
+      case 'fri':
+        if (this.timesheet.value.fri == 9)
+          this.timesheet.patchValue({ fri: '' })
+        break;
+      case 'sat':
+        if (this.timesheet.value.sat == 9)
+          this.timesheet.patchValue({ sat: '' })
+        break;
+      case 'sun':
+        if (this.timesheet.value.sun == 9)
+          this.timesheet.patchValue({ sun: '' })
+        break;
+        case 'mono':
+        if (this.timesheet.value.mono == 9)
+          this.timesheet.patchValue({ mono: '' })
+        break;
+      case 'tueo':
+        if (this.timesheet.value.tueo == 9)
+          this.timesheet.patchValue({ tueo: '' })
+        break;
+      case 'wedo':
+        if (this.timesheet.value.wedo == 9)
+          this.timesheet.patchValue({ wedo: '' })
+        break;
+      case 'thuo':
+        if (this.timesheet.value.thuo == 9)
+          this.timesheet.patchValue({ thuo: '' })
+        break;
+      case 'frio':
+        if (this.timesheet.value.frio == 9)
+          this.timesheet.patchValue({ frio: '' })
+        break;
+      case 'sato':
+        if (this.timesheet.value.sato == 9)
+          this.timesheet.patchValue({ sato: '' })
+        break;
+      case 'suno':
+        if (this.timesheet.value.suno == 9)
+          this.timesheet.patchValue({ suno: '' })
+        break;
+      default:
+        break;
+    }
+  }
   openModal(template: TemplateRef<any>) {
-    this.modalRef = this.modalService.show(template,this.config);
+    this.modalRef = this.modalService.show(template, this.config);
   }
   decline(): void {
     this.modalRef.hide();

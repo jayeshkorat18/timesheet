@@ -19,8 +19,9 @@ export class WebserviceHandlerService {
     });
   }
   PostFormData(URL, Parameter) {
+    console.log(Parameter);
     let access_token = localStorage.getItem('access_token');
-    var headers = new Headers({ 'Content-Type':'application/x-www-form-urlencoded','Accept':'application/json' });
+    let headers = new Headers({"Content-Type": "application/x-www-form-urlencoded","Accept": "application/json"});
     var Option = new RequestOptions({ headers: headers });
     let token=((URL.indexOf('?') != -1)?'&access_token=':'?access_token=')+access_token;
     return this.http.post(URL+token, Parameter, Option).map(data => {

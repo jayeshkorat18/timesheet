@@ -47,25 +47,25 @@
           Regular Hours
         </div>
         <div class="col-lg-1">
-          <input type="text" formControlName="mon" class="form-control" placeholder="Hour">
+          <input type="text" formControlName="mon" (keyup)="validateValue('mon')" limit-to="1" class="form-control" placeholder="Hour">
         </div>
         <div class="col-lg-1">
-          <input type="text" formControlName="tue" class="form-control" placeholder="Hour">
+          <input type="text" formControlName="tue" (keyup)="validateValue('tue')" limit-to="1" class="form-control" placeholder="Hour">
         </div>
         <div class="col-lg-1">
-          <input type="text" formControlName="wed" class="form-control" placeholder="Hour">
+          <input type="text" formControlName="wed" (keyup)="validateValue('wed')" limit-to="1" class="form-control" placeholder="Hour">
         </div>
         <div class="col-lg-1">
-          <input type="text" formControlName="thu" class="form-control" placeholder="Hour">
+          <input type="text" formControlName="thu" (keyup)="validateValue('thu')" limit-to="1" class="form-control" placeholder="Hour">
         </div>
         <div class="col-lg-1">
-          <input type="text" formControlName="fri" class="form-control" placeholder="Hour">
+          <input type="text" formControlName="fri" (keyup)="validateValue('fri')" limit-to="1" class="form-control" placeholder="Hour">
         </div>
         <div class="col-lg-1">
-          <input type="text" formControlName="sat" class="form-control" placeholder="Hour">
+          <input type="text" formControlName="sat" (keyup)="validateValue('sat')" limit-to="1" class="form-control" placeholder="Hour">
         </div>
         <div class="col-lg-1">
-          <input type="text" formControlName="sun" class="form-control" placeholder="Hour">
+          <input type="text" formControlName="sun" (keyup)="validateValue('sun')" limit-to="1" class="form-control" placeholder="Hour">
         </div>
       </div>
       <div class="row margin-top-15">
@@ -73,25 +73,33 @@
           Overtime Hours
         </div>
         <div class="col-lg-1">
-          <input type="text" formControlName="mono" class="form-control" placeholder="Hour">
+          <input type="text" formControlName="mono" (keyup)="validateValue('mono')" limit-to="1" class="form-control" placeholder="Hour">
         </div>
         <div class="col-lg-1">
-          <input type="text" formControlName="tueo" class="form-control" placeholder="Hour">
+          <input type="text" formControlName="tueo" (keyup)="validateValue('tueo')" limit-to="1" class="form-control" placeholder="Hour">
         </div>
         <div class="col-lg-1">
-          <input type="text" formControlName="wedo" class="form-control" placeholder="Hour">
+          <input type="text" formControlName="wedo" (keyup)="validateValue('wedo')" limit-to="1" class="form-control" placeholder="Hour">
         </div>
         <div class="col-lg-1">
-          <input type="text" formControlName="thuo" class="form-control" placeholder="Hour">
+          <input type="text" formControlName="thuo" (keyup)="validateValue('thuo')" limit-to="1" class="form-control" placeholder="Hour">
         </div>
         <div class="col-lg-1">
-          <input type="text" formControlName="frio" class="form-control" placeholder="Hour">
+          <input type="text" formControlName="frio" (keyup)="validateValue('frio')" limit-to="1" class="form-control" placeholder="Hour">
         </div>
         <div class="col-lg-1">
-          <input type="text" formControlName="sato" class="form-control" placeholder="Hour">
+          <input type="text" formControlName="sato" (keyup)="validateValue('sato')" limit-to="1" class="form-control" placeholder="Hour">
         </div>
         <div class="col-lg-1">
-          <input type="text" formControlName="suno" class="form-control" placeholder="Hour">
+          <input type="text" formControlName="suno" (keyup)="validateValue('suno')" limit-to="1" class="form-control" placeholder="Hour">
+        </div>
+      </div>
+      <div class="row margin-top-15">
+        <div class="col-lg-3 text-right">
+          Note
+        </div>
+        <div class="col-lg-7">
+          <textarea class="form-control" placeholder="Notes"></textarea>
         </div>
       </div>
       <div class="row margin-top-15">

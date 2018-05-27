@@ -125,7 +125,7 @@ export class TimesheetComponent implements OnInit {
   //Change status of billed
   MarkAsBilled(param){
     this.common.ShowSpinner()
-    this.service.MarkAsBilled({timesheetId:param.id,isBilled:true}).subscribe(result=>{
+    this.service.MarkAsBilled({timesheetId:"171",isBilled:true}).subscribe(result=>{
       console.log(result)
       if(result=="Timesheet is billed changes success"){
         this.common.showToast("Status update successfuly","Status","success")

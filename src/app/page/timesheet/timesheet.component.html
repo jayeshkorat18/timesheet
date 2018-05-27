@@ -19,7 +19,7 @@
       <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
         <thead>
           <tr>
-            <th class="text-center nosort">Date</th>
+            <th class="text-center nosort ">Date</th>
             <th class="text-center nosort">Regular Hours</th>
             <th class="text-center nosort">Overtime</th>
             <th class="text-center nosort">Document</th>
@@ -58,10 +58,10 @@
               <span *ngIf="person.isPaidByClient">Paid</span>
             </td>
 
-            <td *ngIf="person.status==2" class="text-center">
+            <td *ngIf="userDetail.user.myrole_id==2" class="text-center">
             <!-- <a [routerLink]="['/page/candidate/edit-candidate/'+person.id]" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> -->
             <!-- <i (click)="open(content)" class="fa fa-trash-o" aria-hidden="true"></i> -->
-            <button  (click)="openModalChangeHours(changehours,person)" class="btn btn-outline-success btn-sm detail-btn">Update</button>
+            <button *ngIf="person.status!=2"  (click)="openModalChangeHours(changehours,person)" class="btn btn-outline-success btn-sm detail-btn">Update</button>
             </td>
           </tr>
         </tbody>

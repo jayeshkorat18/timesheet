@@ -32,6 +32,7 @@ export class CandidateComponent implements OnInit {
   public closeDetail: Function;
   public clientsList: any = [];
   public candidateDetail: any;
+  public clientDetail:any={};
   constructor(public router: Router,private modalService: BsModalService, public common: CommonService, public service: WebserviceService) {
 
   }
@@ -161,6 +162,39 @@ export class CandidateComponent implements OnInit {
       })
       this.modalRef.hide();
     }
+  }
+
+  //Open project detail model
+  openProjectDetailModal(template: TemplateRef<any>, data) {
+    this.GetClientDetailByCandidate(data.id)
+    this.modalRef = this.modalService.show(template, this.config);
+  }
+
+  //Get client detail by candidate id
+  GetClientDetailByCandidate(id){
+    this.common.ShowSpinner();
+    this.service.GetClientDetailByCandidate(id).subscribe(result=>{
+      console.log(result);
+      this.clientDetail=result;
+      this.common.HideSpinner();
+    },error=>{
+      console.log(error);
+      this.common.HideSpinner();
+    })
+  }
+
+  UpdateProject(client_id,candidateId){
+    this.common.ShowSpinner()
+      this.service.EndProject({client_id:client_id,end_date:this.common.formatDate(new Date),account_id:candidateId}).subscribe(result => {
+        //console.log(result);
+        this.common.showToast("Update Project successfuly", "Success", "success")
+        this.common.HideSpinner();
+      }, error => {
+        console.log(error);
+        this.common.HideSpinner();
+        this.common.showToast("Error in update project", "Error", "danger")
+      })
+      this.modalRef.hide();
   }
 
   Close() {
