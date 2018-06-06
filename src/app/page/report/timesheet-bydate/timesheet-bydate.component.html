@@ -11,13 +11,13 @@
               
             </div>
             <div class="col-md-3">
-                <input type="text" [(ngModel)]="startDate" ngbDatepicker #d="ngbDatepicker" class="form-control" placeholder="Start Date">
+                <input type="text" ngbDatepicker #d="ngbDatepicker" class="form-control" placeholder="Start Date">
                 <button class="input-group-addon calender-btn" (click)="d.toggle()" type="button">
                     <span class="fa fa-calendar"></span>
                 </button>
               </div>
               <div class="col-md-3">
-                  <input type="text" [(ngModel)]="endDate" ngbDatepicker #ed="ngbDatepicker" class="form-control" placeholder="End Date">
+                  <input type="text" ngbDatepicker #ed="ngbDatepicker" class="form-control" placeholder="End Date">
                   <button class="input-group-addon calender-btn" (click)="ed.toggle()" type="button">
                       <span class="fa fa-calendar"></span>
                   </button>
