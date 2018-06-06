@@ -59,9 +59,12 @@ export class CandidateComponent implements OnInit {
     this.common.ShowSpinner();
     this.service.getCandidateList().subscribe(result => {
       //console.log(result);
-      this.persons = result;
-      this.dtTrigger.next();
-      this.common.HideSpinner();
+      if(result.status==1){
+        this.persons = result.data;
+        this.dtTrigger.next();
+        this.common.HideSpinner();
+      }
+      
     }, error => {
       console.log(error);
       //this.persons = [{ email: 'jayesh@gmail.com', username: 'jayesh', status: true, id: 1 }, { email: 'jayesh2@gmail.com', username: 'jayesh2', status: true, id: 2 }]
@@ -155,6 +158,7 @@ export class CandidateComponent implements OnInit {
         //console.log(result);
         this.common.showToast("Assign successfuly", "Success", "success")
         this.common.HideSpinner();
+        //this.AccountantList();
       }, error => {
         console.log(error);
         this.common.HideSpinner();
@@ -175,7 +179,10 @@ export class CandidateComponent implements OnInit {
     this.common.ShowSpinner();
     this.service.GetClientDetailByCandidate(id).subscribe(result=>{
       console.log(result);
-      this.clientDetail=result;
+      if(result.status==1){
+        this.clientDetail=result.data;
+      }
+      
       this.common.HideSpinner();
     },error=>{
       console.log(error);
@@ -185,7 +192,7 @@ export class CandidateComponent implements OnInit {
 
   UpdateProject(client_id,candidateId){
     this.common.ShowSpinner()
-      this.service.EndProject({client_id:client_id,end_date:this.common.formatDate(new Date),account_id:candidateId}).subscribe(result => {
+      this.service.EndProject({client_id:client_id,start_date:'05/22/2018',end_date:this.common.formatDate(new Date),account_id:candidateId}).subscribe(result => {
         //console.log(result);
         this.common.showToast("Update Project successfuly", "Success", "success")
         this.common.HideSpinner();

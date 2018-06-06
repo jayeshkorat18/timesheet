@@ -1,0 +1,101 @@
+<div class="card" style="margin-bottom: 20px;">
+    <div class="card-header primary">Filter</div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-3">
+              <select class="form-control">
+                <option> Select Candidate</option>
+                <option value='1'> Candidate 1</option>
+                <option value='2'> Candidate 2</option>
+              </select>  
+              
+            </div>
+            <div class="col-md-3">
+                <input type="text" [(ngModel)]="startDate" ngbDatepicker #d="ngbDatepicker" class="form-control" placeholder="Start Date">
+                <button class="input-group-addon calender-btn" (click)="d.toggle()" type="button">
+                    <span class="fa fa-calendar"></span>
+                </button>
+              </div>
+              <div class="col-md-3">
+                  <input type="text" [(ngModel)]="endDate" ngbDatepicker #ed="ngbDatepicker" class="form-control" placeholder="End Date">
+                  <button class="input-group-addon calender-btn" (click)="ed.toggle()" type="button">
+                      <span class="fa fa-calendar"></span>
+                  </button>
+            </div>
+            <div class="col-md-3">
+                <button type="button" class="btn btn-success">Search</button>
+            </div>
+          </div>
+      </div>
+  </div>
+    
+<div class="card">
+  <div class="card-header">Timesheet By Date</div>
+  <div class="card-body">
+    
+    <div >
+      <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
+        <thead>
+          <tr>
+            <th class="text-center nosort ">Date</th>
+            <th class="text-center nosort">Regular Hours</th>
+            <th class="text-center nosort">Overtime</th>
+            <th class="text-center nosort">Status</th>
+            <th class="text-center nosort">Billed</th>
+            <th class="text-center nosort">Paid</th>
+            <!-- <th class="text-center nosort">Document</th> -->
+            <!-- <th class="text-center nosort">Status</th>
+            <th *ngIf="userDetail.user.myrole_id!=2" class="text-center nosort">Billed</th>
+            <th *ngIf="userDetail.user.myrole_id!=2" class="text-center nosort">Paid</th>
+            <th *ngIf="userDetail.user.myrole_id==2" class="text-center nosort">Action</th> -->
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let person of timesheet">
+
+            <td class="text-center">{{ person.date | date:'MM/dd/yyyy' }}</td>
+            <td class="text-center">{{ person.regular_hours }}</td>
+            <td class="text-center">{{ person.overtime_hours }}</td>
+            <td class="text-center"><span class="badge badge-pill badge-success">Approved</span></td>
+            <td class="text-center"><span class="badge badge-pill badge-success">Billed</span></td>
+            <td class="text-center"><span class="badge badge-pill badge-danger">UnPaid</span></td>
+            <!-- <td class="text-center">
+              <a href="{{ person.timesheet_image_name }}" target="_blank">Document Link</a>
+            </td> -->
+            <!-- <td class="text-center">
+              <div *ngIf="userDetail.user.myrole_id==2">
+                <span *ngIf="person.status==1">Submited</span>
+                <span *ngIf="person.status==2">Approved</span>
+                <span *ngIf="person.status==3">Reject</span>
+              </div>
+              <div *ngIf="userDetail.user.myrole_id!=2">
+                <button *ngIf="person.status==1 || person.status==3" (click)="openModalStatusApprove(approve,person)" class="btn btn-outline-success btn-sm detail-btn">Approve</button>
+                <button *ngIf="person.status==1 || person.status==2" (click)="openModalStatusReject(reject,person)" class="btn btn-outline-danger btn-sm detail-btn">Reject</button>
+              </div>
+            </td> -->
+            <!-- <td class="text-center" *ngIf="userDetail.user.myrole_id!=2">
+              <button *ngIf="!person.isBilled" (click)="openModal(template,person)" class="btn btn-outline-success btn-sm detail-btn">Mark as Billed</button>
+              <span *ngIf="person.isBilled">Billed</span>
+            </td>
+            <td class="text-center" (click)="openModalPaid(paid,person)" *ngIf="userDetail.user.myrole_id!=2">
+              <button *ngIf="!person.isPaidByClient" class="btn btn-outline-success btn-sm detail-btn">Mark as Paid</button>
+              <span *ngIf="person.isPaidByClient">Paid</span>
+            </td>
+
+            <td *ngIf="userDetail.user.myrole_id==2" class="text-center">
+              <button *ngIf="person.status!=2" (click)="openModalChangeHours(changehours,person)" class="btn btn-outline-success btn-sm detail-btn">Update</button>
+            </td> -->
+          </tr>
+          <tr>
+            <td><b>Total:</b></td>
+            <td class="text-center"><b>35</b></td>
+            <td class="text-center"><b>10</b></td>
+            <td class="text-center"><b>-</b></td>
+            <td class="text-center"><b>-</b></td>
+            <td class="text-center"><b>-</b></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

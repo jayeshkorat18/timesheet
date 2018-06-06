@@ -128,8 +128,8 @@ export class WebserviceService {
 
   //Update user detail
   UpdateUserDetail(id, Parameter) {
-    var URL = this.BASE_URL + 'userDetails/' + id;
-    return this.webservicehandler.Put(URL, Parameter).map(data => {
+    var URL = this.BASE_URL + 'userdetails/updateUserDetails';
+    return this.webservicehandler.Post(URL, Parameter).map(data => {
       return data;
     }, error => {
       return error;

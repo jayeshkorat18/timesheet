@@ -15,6 +15,25 @@
         <a routerLink="/page/timesheet" *ngIf="UserData.user.myrole_id==2" [routerLinkActive]="['router-link-active']" class="list-group-item">
             <i class="fa fa-fw fa-tasks"></i>&nbsp;{{ 'Timesheet'}}
         </a>
+    
+        <div class="nested-menu">
+            <a class="list-group-item" (click)="addExpandClass('pages')">
+                <span><i class="fa fa-file"></i>&nbsp; {{ 'Report'}}</span>
+            </a>
+            <li class="nested" [class.expand]="showMenu === 'pages'">
+                <ul class="submenu">
+                    <li>
+                        <a routerLink="/page/report/candidate-timesheet"><span>{{ 'Candidate Timesheet'}}</span></a>
+                    </li>
+                    <li>
+                        <a routerLink="/page/report/timesheet-bydate"><span>{{ 'Timesheet By Date'}}</span></a>
+                    </li>
+                    <li>
+                        <a routerLink="/page/report/timesheet-status"><span>{{ 'Timesheet status'}}</span></a>
+                    </li>
+                </ul>
+            </li>
+        </div>
         <!-- <a [routerLink]="['/charts']" [routerLinkActive]="['router-link-active']" class="list-group-item">
             <i class="fa fa-fw fa-bar-chart-o"></i>&nbsp;{{ 'Charts'}}
         </a>

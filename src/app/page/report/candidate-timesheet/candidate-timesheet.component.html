@@ -1,0 +1,46 @@
+<div class="card">
+  <div class="card-header">Candidate Timesheet Report</div>
+  <div class="card-body">
+    <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
+      <thead>
+        <tr>
+          <th class="nosort">Email</th>
+          <th class="nosort">Username</th>
+          <th class="text-center nosort">Status</th>
+          <th class="text-center nosort">Submited Hours</th>
+          <th class="text-center nosort">Approved Hours</th>
+          <th class="text-center nosort">Rejected Hours</th>
+          <th class="text-center nosort">Billed Hours</th>
+          <th class="text-center nosort">Paid Hours</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let person of persons">
+
+          <td>{{ person.email }}</td>
+          <td>{{ person.username }}</td>
+
+          <td class="text-center">
+            <!-- <ui-switch [(checked)]="person.status" (change)="openModal(template,person,$event)" defaultBgColor="red"></ui-switch> -->
+            {{person.status?'Enable':'Disable'}}
+          </td>
+          <td class="text-center">
+            20
+          </td>
+          <td class="text-center">
+            14
+          </td>
+          <td class="text-center">
+            6
+          </td>
+          <td class="text-center">
+            14
+          </td>
+          <td class="text-center">
+            10
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

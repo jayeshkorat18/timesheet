@@ -74,6 +74,8 @@ export class AddCandidateComponent implements OnInit {
     if (this.accountant.valid) {
       let param = this.accountant.value;
       param.myrole_id = 2;
+      param.realm="string";
+      param.emailVerified=1;
       console.log(param)
 
       if (this.userid == 0) {

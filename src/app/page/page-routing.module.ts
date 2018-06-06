@@ -13,7 +13,7 @@ const routes: Routes = [
       { path: 'accountant', loadChildren: './accountant/accountant.module#AccountantModule',canActivate:[AuthGuard]  },
       { path: 'candidate', loadChildren: './candidate/candidate.module#CandidateModule',canActivate:[AuthGuard]  },
       { path: 'client', loadChildren: './client/client.module#ClientModule',canActivate:[AuthGuard]  },
-      //{ path: 'userdetail', loadChildren: './userdetail/userdetail.module#UserdetailModule',canActivate:[AuthGuard]  },
+      { path: 'report', loadChildren: './report/report.module#ReportModule',canActivate:[AuthGuard]  },
       { path: 'timesheet', loadChildren: './timesheet/timesheet.module#TimesheetModule',canActivate:[AuthGuard]  },
     ]
   }

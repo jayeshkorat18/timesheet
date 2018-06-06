@@ -19,6 +19,8 @@ export class ValidationService {
       },
       'phone':{
         required: 'Please enter phone number.',
+        maxlength:`Phone number maximun of ${validatorValue.requiredLength} `,
+        minlength:`Phone number maximun of ${validatorValue.requiredLength} `
       },
       'client_name':{
         required: 'Please enter client name',

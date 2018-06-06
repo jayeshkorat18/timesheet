@@ -45,6 +45,7 @@ export class AddTimesheetComponent implements OnInit {
       frio: [''],
       sato: [''],
       suno: [''],
+      notes: ['']
     })
   }
 
@@ -94,16 +95,19 @@ export class AddTimesheetComponent implements OnInit {
           break;
       }
       let date = moment(day.toDate()).format('MM/DD/YYYY')
-      requestData.push({
-        status: 1,
-        status_updatedby_id: this.userDetail.user.id,
-        date: date,
-        regular_hours: rhours,
-        overtime_hours: ohours,
-        timesheet_image_name: 'image',
-        client_id: 1,
-        account_id: this.userDetail.user.id
-      })
+      if ((rhours != 0 || ohours != 0) && date<=moment().format('MM/DD/YYYY')) {
+        requestData.push({
+          status: 1,
+          status_updatedby_id: this.userDetail.user.id,
+          date: date,
+          regular_hours: rhours,
+          overtime_hours: ohours,
+          timesheet_image_name: 'image',
+          client_id: 1,
+          account_id: this.userDetail.user.id,
+          notes: timesheet.value.notes
+        })
+      }
 
       day = day.clone().add(1, 'd');
     }
@@ -159,7 +163,7 @@ export class AddTimesheetComponent implements OnInit {
         if (this.timesheet.value.sun == 9)
           this.timesheet.patchValue({ sun: '' })
         break;
-        case 'mono':
+      case 'mono':
         if (this.timesheet.value.mono == 9)
           this.timesheet.patchValue({ mono: '' })
         break;
