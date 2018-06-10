@@ -5,7 +5,6 @@ import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import * as moment from 'moment';
 
-
 import { CommonService } from '../../../shared/service/common.service';
 import { WebserviceService } from '../../../shared/service/webservice.service';
 
@@ -27,7 +26,7 @@ export class AddTimesheetComponent implements OnInit {
     class: 'modal-md'
   };
   resultData: any;
-
+  
   constructor(private router: Router, public formBuilder: FormBuilder, private modalService: BsModalService, public common: CommonService, public service: WebserviceService) {
     this.userDetail = JSON.parse(localStorage.getItem('UserData'))
     this.timesheet = formBuilder.group({
@@ -48,7 +47,8 @@ export class AddTimesheetComponent implements OnInit {
       notes: ['']
     })
   }
-
+  
+ 
   ngOnInit() {
   }
 
