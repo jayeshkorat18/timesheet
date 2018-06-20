@@ -88,8 +88,9 @@ export class AddAccountantComponent implements OnInit {
           this.common.showToast('Accountant Added Successfully', 'Success', 'success')
           this.common.HideSpinner();
         }, error => {
-          console.log(error);
-          this.common.showToast('Error in add accountant', 'Error', 'error')
+          //console.log(error);
+          this.common.showToast(JSON.parse(error._body).error.message,'Error','error')
+          //this.common.showToast('Error in add accountant', 'Error', 'error')
           this.common.HideSpinner();
         })
       } else {
@@ -101,7 +102,8 @@ export class AddAccountantComponent implements OnInit {
           this.common.HideSpinner();
         }, error => {
           console.log(error);
-          this.common.showToast('Error in save accountant', 'Error', 'error')
+          this.common.showToast(JSON.parse(error._body).error.message,'Error','error')
+          //this.common.showToast('Error in save accountant', 'Error', 'error')
           this.common.HideSpinner();
         })
       }

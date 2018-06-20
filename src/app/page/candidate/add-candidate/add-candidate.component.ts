@@ -75,7 +75,7 @@ export class AddCandidateComponent implements OnInit {
       let param = this.accountant.value;
       param.myrole_id = 2;
       param.realm="string";
-      param.emailVerified=1;
+      param.emailVerified=true;
       console.log(param)
 
       if (this.userid == 0) {
@@ -86,20 +86,20 @@ export class AddCandidateComponent implements OnInit {
           this.common.showToast('Candidate Added Successfully', 'Success', 'success')
           this.common.HideSpinner();
         }, error => {
-          console.log(error);
-          this.common.showToast('Error in add candidate', 'Error', 'error')
+          
+          this.common.showToast(JSON.parse(error._body).error.message,'Error','error')
+          //this.common.showToast('Error in add candidate', 'Error', 'error')
           this.common.HideSpinner();
         })
       } else {
         this.common.ShowSpinner();
         this.service.EditAccountant(this.userid, param).subscribe(result => {
-          //console.log(result);
           this.router.navigate(['page/candidate']);
           this.common.showToast('Candidate Save Successfully', 'Success', 'success')
           this.common.HideSpinner();
         }, error => {
-          console.log(error);
-          this.common.showToast('Error in save candidate', 'Error', 'error')
+          this.common.showToast(JSON.parse(error._body).error.message,'Error','error')
+          //this.common.showToast('Error in save candidate', 'Error', 'error')
           this.common.HideSpinner();
         })
       }

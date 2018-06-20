@@ -20,6 +20,7 @@ export class UserdetailComponent implements OnInit {
   @Output() onCloseBack: EventEmitter<any> = new EventEmitter();
   model: any = new Date();
   maxDate: any;
+  dateofbirth:any;
   constructor(public router: Router, public parserDate: NgbDateParserFormatter, public activatedRoute: ActivatedRoute, private fb: FormBuilder, public service: WebserviceService, public common: CommonService) {
 
     this.userdetail = fb.group({
@@ -52,8 +53,9 @@ export class UserdetailComponent implements OnInit {
 
       if (result.length > 0) {
         let cdate = new Date(result[0].dob)
-        console.log(cdate)
-        result[0].dob = { month: cdate.getMonth() + 1, day: cdate.getDate(), year: cdate.getFullYear() };
+       // console.log(cdate)
+        //result[0].dob = { month: cdate.getMonth() + 1, day: cdate.getDate(), year: cdate.getFullYear() };
+        this.dateofbirth=cdate.getFullYear()+'-'+(cdate.getMonth() + 1)+'-'+cdate.getDate();
         this.userdetail.patchValue(result[0]);
       }
       console.log(this.userdetail)

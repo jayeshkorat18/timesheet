@@ -13,7 +13,7 @@
             <div class="form-group">
               <input type="password" formControlName="password" [class.invalid]="!login.controls.password.valid && submitAttempt && (login.controls.password.dirty || submitAttempt)" class="form-control input-underline input-lg" placeholder="Password">
               <app-field-error-display [control]="login.controls.password" Name="password" [submitAttempt]="submitAttempt"></app-field-error-display>
-              <a [routerLink]="['/forgot-password']">Forgot password?</a>
+              <!-- <a [routerLink]="['/forgot-password']">Forgot password?</a> -->
             </div>
             
           </div>

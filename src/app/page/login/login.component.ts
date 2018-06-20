@@ -40,8 +40,7 @@ export class LoginComponent implements OnInit {
         }
         this.common.HideSpinner();
       },error=>{
-        this.common.showToast('Login Username & Password','Invalid','error')
-        console.log(error);
+        this.common.showToast(JSON.parse(error._body).error.message,'Invalid','error')
         this.common.HideSpinner();
       })
       console.log('form submitted');
