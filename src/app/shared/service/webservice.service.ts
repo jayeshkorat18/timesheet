@@ -238,4 +238,14 @@ export class WebserviceService {
       return error;
     });
   }
+
+  //Get S3 bucket detail
+  GetS3Detail() {
+    var URL = this.BASE_URL + 'account/getAPIKey';
+    return this.webservicehandler.Get(URL).map(data => {
+      return data.json();
+    }, error => {
+      return error;
+    });
+  }
 }

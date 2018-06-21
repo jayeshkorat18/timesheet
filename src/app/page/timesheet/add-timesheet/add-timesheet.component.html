@@ -3,6 +3,11 @@
     Add Timesheet
   </div>
   <div class="card-body">
+      <!-- <label class="btn btn-default">
+          <input type="file" (change)="selectFile($event)">
+        </label>
+         
+        <button class="btn btn-success" [disabled]="!selectedFiles" (click)="upload()">Upload</button> -->
     <div class="row">
       <div class="col-lg-3">
         <button type="button" (click)="previousWeek()" class="btn btn-success ">Previous week</button>
@@ -107,7 +112,10 @@
 
         </div>
         <div class="col-lg-2">
-          <button type="button" class="btn btn-outline-info btn-sm">Upload support docs</button>
+          <!-- <button type="button" class="btn btn-outline-info btn-sm">Upload support docs</button> -->
+          <label class="btn btn-default">
+              <input type="file" (change)="selectFile($event)">
+            </label>
         </div>
       </div>
       <div class="row margin-top-15">

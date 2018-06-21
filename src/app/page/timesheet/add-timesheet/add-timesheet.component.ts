@@ -4,6 +4,7 @@ import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import * as moment from 'moment';
+import * as S3 from 'aws-sdk/clients/s3'
 
 import { CommonService } from '../../../shared/service/common.service';
 import { WebserviceService } from '../../../shared/service/webservice.service';
@@ -26,7 +27,11 @@ export class AddTimesheetComponent implements OnInit {
     class: 'modal-md'
   };
   resultData: any;
-  
+  accessKeyId: any;
+  secretAccessKey: any;
+  FOLDER = 'timesheets.angularjs/';
+  selectedFiles: FileList;
+
   constructor(private router: Router, public formBuilder: FormBuilder, private modalService: BsModalService, public common: CommonService, public service: WebserviceService) {
     this.userDetail = JSON.parse(localStorage.getItem('UserData'))
     this.timesheet = formBuilder.group({
@@ -46,91 +51,136 @@ export class AddTimesheetComponent implements OnInit {
       suno: [''],
       notes: ['']
     })
+    this.getS3Detail();
   }
-  
- 
+
   ngOnInit() {
+  }
+
+  //File upload start
+  getS3Detail() {
+    this.service.GetS3Detail().subscribe((result) => {
+      if (result.status == 1) {
+        let decrypt = atob(result.data);
+        var array = decrypt.split(':');
+        this.accessKeyId = array[0].trim();
+        this.secretAccessKey = array[1].trim();
+      }
+    }, (error) => {
+      console.log(error);
+    })
+  }
+
+  selectFile(event) {
+    this.selectedFiles = event.target.files;
   }
 
   //Timesheet start
   testsubmit(timesheet) {
     console.log(timesheet.value);
-    var days = [];
-    var day = this.startOfWeek;
-    var requestData = [];
-    while (day <= this.endOfWeek) {
-      days.push(day.toDate());
-      let rhours = 0;
-      let ohours = 0;
-      switch (day.days()) {
-        case 1:
-          rhours = timesheet.value.mon;
-          ohours = timesheet.value.mono;
-          break;
-        case 2:
-          rhours = timesheet.value.tue;
-          ohours = timesheet.value.tueo;
-          break;
-        case 3:
-          rhours = timesheet.value.wed;
-          ohours = timesheet.value.wedo;
-          break;
-        case 4:
-          rhours = timesheet.value.thu;
-          ohours = timesheet.value.thuo;
-          break;
-        case 5:
-          rhours = timesheet.value.fri;
-          ohours = timesheet.value.frio;
-          break;
-        case 6:
-          rhours = timesheet.value.sat;
-          ohours = timesheet.value.sato;
-          break;
-        case 0:
-          rhours = timesheet.value.sun;
-          ohours = timesheet.value.suno;
-          break;
-        default:
-          break;
-      }
-      let date = moment(day.toDate()).format('MM/DD/YYYY')
-      if ((rhours != 0 || ohours != 0) && date<=moment().format('MM/DD/YYYY')) {
-        requestData.push({
-          status: 1,
-          status_updatedby_id: this.userDetail.user.id,
-          date: date,
-          regular_hours: rhours,
-          overtime_hours: ohours,
-          timesheet_image_name: 'image',
-          client_id: 1,
-          account_id: this.userDetail.user.id,
-          notes: timesheet.value.notes
-        })
-      }
+    if (Boolean(this.selectedFiles)) {
+      const file = this.selectedFiles.item(0);
+      const bucket = new S3(
+        {
+          accessKeyId: this.accessKeyId,
+          secretAccessKey: this.secretAccessKey,
+          region: 'us-east-2'
+        }
+      );
+      const params = {
+        Bucket: 'timesheets.tekreliance.com',
+        Key: this.FOLDER + Date.now()+'_'+file.name,
+        Body: file
+      };
+      let self = this;
+      self.common.ShowSpinner();
+      bucket.upload(params, function (err, data) {
 
-      day = day.clone().add(1, 'd');
+        if (err) {
+          console.log('There was an error uploading your file: ', err);
+          self.common.showToast('There was an error uploading your file', 'Error', 'error');
+          self.common.HideSpinner();
+          return false;
+        } else {
+          console.log('Successfully uploaded file.', data);
+          var days = [];
+          var day = self.startOfWeek;
+          var requestData = [];
+          while (day <= self.endOfWeek) {
+            days.push(day.toDate());
+            let rhours = 0;
+            let ohours = 0;
+            switch (day.days()) {
+              case 1:
+                rhours = timesheet.value.mon;
+                ohours = timesheet.value.mono;
+                break;
+              case 2:
+                rhours = timesheet.value.tue;
+                ohours = timesheet.value.tueo;
+                break;
+              case 3:
+                rhours = timesheet.value.wed;
+                ohours = timesheet.value.wedo;
+                break;
+              case 4:
+                rhours = timesheet.value.thu;
+                ohours = timesheet.value.thuo;
+                break;
+              case 5:
+                rhours = timesheet.value.fri;
+                ohours = timesheet.value.frio;
+                break;
+              case 6:
+                rhours = timesheet.value.sat;
+                ohours = timesheet.value.sato;
+                break;
+              case 0:
+                rhours = timesheet.value.sun;
+                ohours = timesheet.value.suno;
+                break;
+              default:
+                break;
+            }
+            let date = moment(day.toDate()).format('MM/DD/YYYY')
+            if ((rhours != 0 || ohours != 0) && date <= moment().format('MM/DD/YYYY')) {
+              requestData.push({
+                status: 1,
+                status_updatedby_id: self.userDetail.user.id,
+                date: date,
+                regular_hours: rhours,
+                overtime_hours: ohours,
+                timesheet_image_name: data.Location,
+                client_id: 1,
+                account_id: self.userDetail.user.id,
+                notes: timesheet.value.notes
+              })
+            }
+
+            day = day.clone().add(1, 'd');
+          }
+
+          console.log(requestData);
+          self.service.AddTimesheet({ "timesheetList": requestData }).subscribe(result => {
+            console.log("Success add timesheet")
+
+            self.resultData = result
+            self.openModal(self.tamplate)
+            //self.common.showToast('msg','Sucess','success');
+            self.router.navigate(['page/timesheet']);
+            self.common.HideSpinner();
+            console.log(result)
+          }, error => {
+            console.log(error)
+            self.common.HideSpinner();
+          })
+
+          return true;
+        }
+      });
+    } else {
+      this.common.showToast('Please select document', 'Validation', 'error');
     }
-
-    //console.log(days);
-    console.log(requestData);
-    this.common.ShowSpinner();
-    this.service.AddTimesheet({ "timesheetList": requestData }).subscribe(result => {
-      console.log("Success add timesheet")
-      // let msg='';
-      // result.forEach(value => {
-      //   msg+=value+'';
-      // });
-      this.resultData = result
-      this.openModal(this.tamplate)
-      //this.common.showToast('msg','Sucess','success');
-      this.router.navigate(['page/timesheet']);
-      this.common.HideSpinner();
-      console.log(result)
-    }, error => {
-      console.log(error)
-      this.common.HideSpinner();
-    })
   }
 
   validateValue(day) {
