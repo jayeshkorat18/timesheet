@@ -14,8 +14,8 @@ export class LoginComponent implements OnInit {
   public submitAttempt: boolean;
   constructor(private router: Router, public common:CommonService,private fb: FormBuilder, public service:WebserviceService ) { 
     this.login = fb.group({
-      username: ['umang', Validators.compose([Validators.required])],
-      password: ['umang', Validators.compose([Validators.required,Validators.minLength(4)])]
+      username: ['', Validators.compose([Validators.required])],
+      password: ['', Validators.compose([Validators.required,Validators.minLength(4)])]
     });
   }
 
