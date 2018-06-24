@@ -4,6 +4,7 @@ import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import * as moment from 'moment';
+import * as _ from 'lodash';
 import * as S3 from 'aws-sdk/clients/s3'
 
 import { CommonService } from '../../../shared/service/common.service';
@@ -18,6 +19,7 @@ export class AddTimesheetComponent implements OnInit {
   userDetail: any;
   @ViewChild('template') tamplate: TemplateRef<any>
   timesheet: FormGroup;
+  timesheetData: any;
   startOfWeek = moment().startOf('isoWeek');
   endOfWeek = moment().endOf('isoWeek');
   modalRef: BsModalRef;
@@ -31,6 +33,7 @@ export class AddTimesheetComponent implements OnInit {
   secretAccessKey: any;
   FOLDER = 'timesheets.angularjs/';
   selectedFiles: FileList;
+  isDisable: any = {};
 
   constructor(private router: Router, public formBuilder: FormBuilder, private modalService: BsModalService, public common: CommonService, public service: WebserviceService) {
     this.userDetail = JSON.parse(localStorage.getItem('UserData'))
@@ -52,6 +55,7 @@ export class AddTimesheetComponent implements OnInit {
       notes: ['']
     })
     this.getS3Detail();
+    this.getTimesheetData();
   }
 
   ngOnInit() {
@@ -89,7 +93,7 @@ export class AddTimesheetComponent implements OnInit {
       );
       const params = {
         Bucket: 'timesheets.tekreliance.com',
-        Key: this.FOLDER + Date.now()+'_'+file.name,
+        Key: this.FOLDER + Date.now() + '_' + file.name,
         Body: file
       };
       let self = this;
@@ -143,7 +147,15 @@ export class AddTimesheetComponent implements OnInit {
                 break;
             }
             let date = moment(day.toDate()).format('MM/DD/YYYY')
-            if ((rhours != 0 || ohours != 0) && date <= moment().format('MM/DD/YYYY')) {
+            let m = moment(day.toDate()).utcOffset(0);
+            m.set({ hour: 0, minute: 0, second: 0, millisecond: 0 });
+            let currentData = _.find(self.timesheetData, function (o) { return o.date == m.toISOString() });
+            let isApproved = false;
+            console.log(currentData);
+            if (Boolean(currentData)) {
+              isApproved = currentData.status == 1 ? false : true;
+            }
+            if ((rhours != 0 || ohours != 0) && date <= moment().format('MM/DD/YYYY') && !isApproved) {
               requestData.push({
                 status: 1,
                 status_updatedby_id: self.userDetail.user.id,
@@ -254,12 +266,135 @@ export class AddTimesheetComponent implements OnInit {
   nextWeek() {
     if (this.startOfWeek < moment().startOf('isoWeek')) {
       this.startOfWeek = moment(this.startOfWeek).add(1, 'weeks').startOf('isoWeek');
-      this.endOfWeek = moment(this.endOfWeek).add(1, 'weeks').endOf('isoWeek')
+      this.endOfWeek = moment(this.endOfWeek).add(1, 'weeks').endOf('isoWeek');
+      this.getTimesheetData();
     }
   }
   previousWeek() {
     this.startOfWeek = moment(this.startOfWeek).subtract(1, 'weeks').startOf('isoWeek');
-    this.endOfWeek = moment(this.endOfWeek).subtract(1, 'weeks').endOf('isoWeek')
+    this.endOfWeek = moment(this.endOfWeek).subtract(1, 'weeks').endOf('isoWeek');
+    this.getTimesheetData()
+  }
+
+  //Get TImesheet data for check approved timesheet and display hours
+  getTimesheetData() {
+    let requestData = {
+      accountId: this.userDetail.user.id,
+      startDate: this.startOfWeek,
+      endDate: this.endOfWeek,
+    }
+    this.common.ShowSpinner();
+    this.service.GetTimesheetDetail(requestData).subscribe((result) => {
+      this.common.HideSpinner();
+      if (result.status == 1) {
+        this.timesheetData = result.data;
+
+
+
+        let self = this;
+        //var day = self.startOfWeek;
+        var days = [];
+        var day = self.startOfWeek;
+        //console.log(self.startOfWeek)
+        //console.log(self.endOfWeek)
+        while (day <= self.endOfWeek) {
+          let m = moment(day.toDate()).utcOffset(0);
+          m.set({ hour: 0, minute: 0, second: 0, millisecond: 0 })
+          switch (day.days()) {
+            case 1:
+              let mon = _.find(this.timesheetData, function (o) { return o.date == m.toISOString() });
+              if (Boolean(mon)) {
+                this.timesheet.patchValue({ mon: mon.regular_hours })
+                this.timesheet.patchValue({ mono: mon.overtime_hours })
+                this.isDisable.mon = mon.status;
+              }else{
+                this.timesheet.patchValue({ mon: '' })
+                this.timesheet.patchValue({ mono: '' })
+                this.isDisable.mon = 1;
+              }
+              break;
+            case 2:
+              let tue = _.find(this.timesheetData, function (o) { return o.date == m.toISOString() })
+              if (Boolean(tue)) {
+                this.timesheet.patchValue({ tue: tue.regular_hours })
+                this.timesheet.patchValue({ tueo: tue.overtime_hours })
+                this.isDisable.tue = tue.status;
+              }else{
+                this.timesheet.patchValue({ tue: '' })
+                this.timesheet.patchValue({ tueo: '' })
+                this.isDisable.tue = 1;
+              }
+              break;
+            case 3:
+              let wed = _.find(this.timesheetData, function (o) { return o.date == m.toISOString() })
+              if (Boolean(wed)) {
+                this.timesheet.patchValue({ wed: wed.regular_hours })
+                this.timesheet.patchValue({ wedo: wed.overtime_hours })
+                this.isDisable.wed = wed.status;
+              }else{
+                this.timesheet.patchValue({ wed: '' })
+                this.timesheet.patchValue({ wedo: '' })
+                this.isDisable.wed = 1;
+              }
+              break;
+            case 4:
+              let thu = _.find(this.timesheetData, function (o) { return o.date == m.toISOString() })
+              if (Boolean(thu)) {
+                this.timesheet.patchValue({ thu: thu.regular_hours })
+                this.timesheet.patchValue({ thuo: thu.overtime_hours })
+                this.isDisable.thu = thu.status;
+              }else{
+                this.timesheet.patchValue({ thu: '' })
+                this.timesheet.patchValue({ thuo: '' })
+                this.isDisable.thu = 1;
+              }
+              break;
+            case 5:
+              let fri = _.find(this.timesheetData, function (o) { return o.date == m.toISOString() })
+              if (Boolean(fri)) {
+                this.timesheet.patchValue({ fri: fri.regular_hours })
+                this.timesheet.patchValue({ frio: fri.overtime_hours })
+                this.isDisable.fri = fri.status;
+              }else{
+                this.timesheet.patchValue({ fri: '' })
+                this.timesheet.patchValue({ frio: '' })
+                this.isDisable.fri = 1;
+              }
+              break;
+            case 6:
+              let sat = _.find(this.timesheetData, function (o) { return o.date == m.toISOString() })
+              if (Boolean(sat)) {
+                this.timesheet.patchValue({ sat: sat.regular_hours })
+                this.timesheet.patchValue({ sato: sat.overtime_hours })
+                this.isDisable.sat = sat.status;
+              }else{
+                this.timesheet.patchValue({ sat: '' })
+                this.timesheet.patchValue({ sato: '' })
+                this.isDisable.sat = 1;
+              }
+              break;
+            case 0:
+              let sun = _.find(this.timesheetData, function (o) { return o.date == m.toISOString() })
+              if (Boolean(sun)) {
+                this.timesheet.patchValue({ sun: sun.regular_hours })
+                this.timesheet.patchValue({ suno: sun.overtime_hours })
+                this.isDisable.sun = sun.status;
+              }else{
+                this.timesheet.patchValue({ sun: '' })
+                this.timesheet.patchValue({ suno: '' })
+                this.isDisable.sun = 1;
+              }
+              break;
+            default:
+              break;
+          }
+          day = day.clone().add(1, 'd');
+        }
+      }
+      console.log(result);
+    }, (error) => {
+      console.log(error);
+    })
   }
   //Timesheet End
 }

@@ -32,7 +32,7 @@ export class TimesheetComponent implements OnInit {
   candidateList:any;
   isNoData:boolean=false;
   timesheetDetail:any;
-
+  paidmsg:any='Are you sure you want to mark as paid';
   constructor(public router: Router, public activatedRoute: ActivatedRoute,private modalService: BsModalService, public common: CommonService, public service: WebserviceService) {
     this.userDetail=JSON.parse(localStorage.getItem('UserData'))
 
@@ -141,8 +141,9 @@ export class TimesheetComponent implements OnInit {
   }
 
   //Change payment status
-  openModalPaid(template: TemplateRef<any>, data) {
+  openModalPaid(template: TemplateRef<any>, data,msg) {
     this.detail=data;
+    this.paidmsg=msg;
     this.modalRef = this.modalService.show(template,this.config);
   }
   paidconfirm(): void {

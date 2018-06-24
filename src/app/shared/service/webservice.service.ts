@@ -248,4 +248,14 @@ export class WebserviceService {
       return error;
     });
   }
+
+  //Get Timesheet detail
+  GetTimesheetDetail(Parameter) {
+    var URL = this.BASE_URL + 'timesheets/getTimesheetListDetails';
+    return this.webservicehandler.Post(URL,Parameter).map(data => {
+      return data;
+    }, error => {
+      return error;
+    });
+  }
 }

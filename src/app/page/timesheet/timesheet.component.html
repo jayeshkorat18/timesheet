@@ -53,9 +53,10 @@
               <button *ngIf="!person.isBilled" (click)="openModal(template,person)" class="btn btn-outline-success btn-sm detail-btn">Mark as Billed</button>
               <span *ngIf="person.isBilled">Billed</span>
             </td>
-            <td class="text-center" (click)="openModalPaid(paid,person)" *ngIf="userDetail.user.myrole_id!=2">
-              <button *ngIf="!person.isPaidByClient" class="btn btn-outline-success btn-sm detail-btn">Mark as Paid</button>
-              <span *ngIf="person.isPaidByClient">Paid</span>
+            <td class="text-center" *ngIf="userDetail.user.myrole_id!=2">
+              <button *ngIf="!person.isPaidByClient" (click)="openModalPaid(paid,person,'Are you sure you want to mark as paid')" class="btn btn-outline-success btn-sm detail-btn">Mark as Paid</button>
+              <button *ngIf="person.isPaidByClient" (click)="openModalPaid(paid,person,'Are you sure you want to mark as unpaid')" class="btn btn-outline-primary btn-sm detail-btn">Mark as UnPaid</button>
+              <!-- <span *ngIf="person.isPaidByClient">Paid</span> -->
             </td>
 
             <td *ngIf="userDetail.user.myrole_id==2" class="text-center">
@@ -79,7 +80,7 @@
 </ng-template>
 <ng-template #paid>
   <div class="modal-body text-center">
-    <p>Are you sure you want to mark as paid</p>
+    <p>{{paidmsg}}</p>
     <button type="button" class="btn btn-success" (click)="paidconfirm()">Yes</button>
     <button type="button" class="btn btn-outline-secondary" (click)="decline()">No</button>
   </div>

@@ -52,25 +52,25 @@
           Regular Hours
         </div>
         <div class="col-lg-1">
-          <input type="text" formControlName="mon" (keyup)="validateValue('mon')" limit-to="1" class="form-control" placeholder="Hour">
+          <input type="text" [readonly]="isDisable.mon=='2'" formControlName="mon" (keyup)="validateValue('mon')" limit-to="1" class="form-control" placeholder="Hour">
         </div>
         <div class="col-lg-1">
-          <input type="text" formControlName="tue" (keyup)="validateValue('tue')" limit-to="1" class="form-control" placeholder="Hour">
+          <input type="text" [readonly]="isDisable.tue=='2'" formControlName="tue" (keyup)="validateValue('tue')" limit-to="1" class="form-control" placeholder="Hour">
         </div>
         <div class="col-lg-1">
-          <input type="text" formControlName="wed" (keyup)="validateValue('wed')" limit-to="1" class="form-control" placeholder="Hour">
+          <input type="text" [readonly]="isDisable.wed=='2'" formControlName="wed" (keyup)="validateValue('wed')" limit-to="1" class="form-control" placeholder="Hour">
         </div>
         <div class="col-lg-1">
-          <input type="text" formControlName="thu" (keyup)="validateValue('thu')" limit-to="1" class="form-control" placeholder="Hour">
+          <input type="text" [readonly]="isDisable.thu=='2'" formControlName="thu" (keyup)="validateValue('thu')" limit-to="1" class="form-control" placeholder="Hour">
         </div>
         <div class="col-lg-1">
-          <input type="text" formControlName="fri" (keyup)="validateValue('fri')" limit-to="1" class="form-control" placeholder="Hour">
+          <input type="text" [readonly]="isDisable.fri=='2'" formControlName="fri" (keyup)="validateValue('fri')" limit-to="1" class="form-control" placeholder="Hour">
         </div>
         <div class="col-lg-1">
-          <input type="text" formControlName="sat" (keyup)="validateValue('sat')" limit-to="1" class="form-control" placeholder="Hour">
+          <input type="text" [readonly]="isDisable.sat=='2'" formControlName="sat" (keyup)="validateValue('sat')" limit-to="1" class="form-control" placeholder="Hour">
         </div>
         <div class="col-lg-1">
-          <input type="text" formControlName="sun" (keyup)="validateValue('sun')" limit-to="1" class="form-control" placeholder="Hour">
+          <input type="text" [readonly]="isDisable.sun=='2'" formControlName="sun" (keyup)="validateValue('sun')" limit-to="1" class="form-control" placeholder="Hour">
         </div>
       </div>
       <div class="row margin-top-15">
@@ -78,25 +78,25 @@
           Overtime Hours
         </div>
         <div class="col-lg-1">
-          <input type="text" formControlName="mono" (keyup)="validateValue('mono')" limit-to="1" class="form-control" placeholder="Hour">
+          <input type="text" [readonly]="isDisable.mon=='2'" formControlName="mono" (keyup)="validateValue('mono')" limit-to="1" class="form-control" placeholder="Hour">
         </div>
         <div class="col-lg-1">
-          <input type="text" formControlName="tueo" (keyup)="validateValue('tueo')" limit-to="1" class="form-control" placeholder="Hour">
+          <input type="text" [readonly]="isDisable.tue=='2'" formControlName="tueo" (keyup)="validateValue('tueo')" limit-to="1" class="form-control" placeholder="Hour">
         </div>
         <div class="col-lg-1">
-          <input type="text" formControlName="wedo" (keyup)="validateValue('wedo')" limit-to="1" class="form-control" placeholder="Hour">
+          <input type="text" [readonly]="isDisable.wed=='2'" formControlName="wedo" (keyup)="validateValue('wedo')" limit-to="1" class="form-control" placeholder="Hour">
         </div>
         <div class="col-lg-1">
-          <input type="text" formControlName="thuo" (keyup)="validateValue('thuo')" limit-to="1" class="form-control" placeholder="Hour">
+          <input type="text" [readonly]="isDisable.thu=='2'" formControlName="thuo" (keyup)="validateValue('thuo')" limit-to="1" class="form-control" placeholder="Hour">
         </div>
         <div class="col-lg-1">
-          <input type="text" formControlName="frio" (keyup)="validateValue('frio')" limit-to="1" class="form-control" placeholder="Hour">
+          <input type="text" [readonly]="isDisable.fri=='2'" formControlName="frio" (keyup)="validateValue('frio')" limit-to="1" class="form-control" placeholder="Hour">
         </div>
         <div class="col-lg-1">
-          <input type="text" formControlName="sato" (keyup)="validateValue('sato')" limit-to="1" class="form-control" placeholder="Hour">
+          <input type="text" [readonly]="isDisable.sat=='2'" formControlName="sato" (keyup)="validateValue('sato')" limit-to="1" class="form-control" placeholder="Hour">
         </div>
         <div class="col-lg-1">
-          <input type="text" formControlName="suno" (keyup)="validateValue('suno')" limit-to="1" class="form-control" placeholder="Hour">
+          <input type="text" [readonly]="isDisable.sun=='2'" formControlName="suno" (keyup)="validateValue('suno')" limit-to="1" class="form-control" placeholder="Hour">
         </div>
       </div>
       <div class="row margin-top-15">
