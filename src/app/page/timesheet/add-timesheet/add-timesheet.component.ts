@@ -5,7 +5,6 @@ import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import * as moment from 'moment';
 import * as _ from 'lodash';
-import * as S3 from 'aws-sdk/clients/s3'
 
 import { CommonService } from '../../../shared/service/common.service';
 import { WebserviceService } from '../../../shared/service/webservice.service';
@@ -56,7 +55,7 @@ export class AddTimesheetComponent implements OnInit {
       suno: [''],
       notes: ['']
     })
-    this.getS3Detail();
+    
     this.getTimesheetData();
   }
 
@@ -77,115 +76,110 @@ export class AddTimesheetComponent implements OnInit {
     //   console.log(error);
     // });
   }
-  //File upload start
-  getS3Detail() {
-    this.service.GetS3Detail().subscribe((result) => {
-      if (result.status == 1) {
-        let decrypt = atob(result.data);
-        var array = decrypt.split(':');
-        this.accessKeyId = array[0].trim();
-        this.secretAccessKey = array[1].trim();
-      }
-    }, (error) => {
-      console.log(error);
-    })
-  }
 
   //Timesheet start
-  testsubmit(timesheet) {
+  timesheetDataSubmit(timesheet) {
     console.log(timesheet.value);
     if (Boolean(this.fileToUpload)) {
-      let self = this;
-      self.common.ShowSpinner();
-      
-      this.service.UploadTimesheetDocument(this.fileToUpload,self.userDetail.user.id).subscribe(data => {
-        if (data.result.files.file[0].name) {
-          console.log('Successfully uploaded file.', data);
-          var days = [];
-          var day = self.startOfWeek;
-          var requestData = [];
-          while (day <= self.endOfWeek) {
-            days.push(day.toDate());
-            let rhours = 0;
-            let ohours = 0;
-            switch (day.days()) {
-              case 1:
-                rhours = timesheet.value.mon;
-                ohours = timesheet.value.mono;
-                break;
-              case 2:
-                rhours = timesheet.value.tue;
-                ohours = timesheet.value.tueo;
-                break;
-              case 3:
-                rhours = timesheet.value.wed;
-                ohours = timesheet.value.wedo;
-                break;
-              case 4:
-                rhours = timesheet.value.thu;
-                ohours = timesheet.value.thuo;
-                break;
-              case 5:
-                rhours = timesheet.value.fri;
-                ohours = timesheet.value.frio;
-                break;
-              case 6:
-                rhours = timesheet.value.sat;
-                ohours = timesheet.value.sato;
-                break;
-              case 0:
-                rhours = timesheet.value.sun;
-                ohours = timesheet.value.suno;
-                break;
-              default:
-                break;
-            }
-            let date = moment(day.toDate()).format('MM/DD/YYYY')
-            let m = moment(day.toDate()).utcOffset(0);
-            m.set({ hour: 0, minute: 0, second: 0, millisecond: 0 });
-            let currentData = _.find(self.timesheetData, function (o) { return o.date == m.toISOString() });
-            let isApproved = false;
-            console.log(currentData);
-            if (Boolean(currentData)) {
-              isApproved = currentData.status == 1 ? false : true;
-            }
-            if ((rhours != 0 || ohours != 0) && date <= moment().format('MM/DD/YYYY') && !isApproved) {
-              requestData.push({
-                status: 1,
-                status_updatedby_id: self.userDetail.user.id,
-                date: date,
-                regular_hours: rhours,
-                overtime_hours: ohours,
-                timesheet_image_name: data.result.files.file[0].name,
-                client_id: 1,
-                account_id: self.userDetail.user.id,
-                notes: timesheet.value.notes
-              })
-            }
-
-            day = day.clone().add(1, 'd');
+      let extention = this.fileToUpload.name.split('.').pop();
+      if (extention == 'jpg' || extention == 'png' || extention == 'pdf') {
+        let self = this;
+        self.common.ShowSpinner();
+        var days = [];
+        var day = self.startOfWeek;
+        var requestData = [];
+        let filename=self.userDetail.user.id;
+        while (day <= self.endOfWeek) {
+          days.push(day.toDate());
+          let rhours = 0;
+          let ohours = 0;
+          switch (day.days()) {
+            case 1:
+              rhours = timesheet.value.mon;
+              ohours = timesheet.value.mono;
+              break;
+            case 2:
+              rhours = timesheet.value.tue;
+              ohours = timesheet.value.tueo;
+              break;
+            case 3:
+              rhours = timesheet.value.wed;
+              ohours = timesheet.value.wedo;
+              break;
+            case 4:
+              rhours = timesheet.value.thu;
+              ohours = timesheet.value.thuo;
+              break;
+            case 5:
+              rhours = timesheet.value.fri;
+              ohours = timesheet.value.frio;
+              break;
+            case 6:
+              rhours = timesheet.value.sat;
+              ohours = timesheet.value.sato;
+              break;
+            case 0:
+              rhours = timesheet.value.sun;
+              ohours = timesheet.value.suno;
+              break;
+            default:
+              break;
+          }
+          let date = moment(day.toDate()).format('MM/DD/YYYY')
+          
+          let currentData = _.find(self.timesheetData, function (o) { return moment(o.date).format('MM/DD/YYYY') == moment(day.toDate()).format('MM/DD/YYYY') });
+          let isApproved = false;
+          //console.log(currentData);
+          if (Boolean(currentData)) {
+            isApproved = currentData.status == 1 ? false : true;
+          }
+          if ((rhours != 0 || ohours != 0) && date <= moment().format('MM/DD/YYYY') && !isApproved) {
+            requestData.push({
+              status: 1,
+              status_updatedby_id: self.userDetail.user.id,
+              date: date,
+              regular_hours: rhours,
+              overtime_hours: ohours,
+              timesheet_image_name: '',//data.result.files.file[0].name,
+              client_id: 1,
+              account_id: self.userDetail.user.id,
+              notes: timesheet.value.notes
+            })
+            filename+='_'+moment(day.toDate()).format('MMDDYY');
           }
 
-          console.log(requestData);
-          self.service.AddTimesheet({ "timesheetList": requestData }).subscribe(result => {
-            console.log("Success add timesheet")
-
-            self.resultData = result
-            self.openModal(self.tamplate)
-            //self.common.showToast('msg','Sucess','success');
-            self.router.navigate(['page/timesheet']);
-            self.common.HideSpinner();
-            console.log(result)
-          }, error => {
-            console.log(error)
-            self.common.HideSpinner();
-          })
-        }else {
-          console.log('There was an error uploading your file: ');
-          self.common.showToast('There was an error uploading your file', 'Error', 'error');
-          self.common.HideSpinner();
+          day = day.clone().add(1, 'd');
         }
-      });
+        filename+='.'+extention;
+        
+        this.service.UploadTimesheetDocument(this.fileToUpload, filename).subscribe(data => {
+          if (data.result.files.file[0].name) {
+            console.log('Successfully uploaded file.', data);
+
+            for(let i=0;i<requestData.length;i++){requestData[i].timesheet_image_name=data.result.files.file[0].name}
+            console.log(requestData);
+            self.service.AddTimesheet({ "timesheetList": requestData }).subscribe(result => {
+              console.log("Success add timesheet")
+
+              self.resultData = result
+              self.openModal(self.tamplate)
+              //self.common.showToast('msg','Sucess','success');
+              self.router.navigate(['page/timesheet']);
+              self.common.HideSpinner();
+              console.log(result)
+            }, error => {
+              console.log(error)
+              self.common.HideSpinner();
+            })
+          } else {
+            console.log('There was an error uploading your file: ');
+            self.common.showToast('There was an error uploading your file', 'Error', 'error');
+            self.common.HideSpinner();
+          }
+        });
+      } else {
+        this.common.showToast('Allow only .jpg, .png, .pdf document format', 'Invalid format', 'error');
+      }
     } else {
       this.common.showToast('Please select document', 'Validation', 'error');
     }
@@ -284,9 +278,6 @@ export class AddTimesheetComponent implements OnInit {
       this.common.HideSpinner();
       if (result.status == 1) {
         this.timesheetData = result.data;
-
-
-
         let self = this;
         //var day = self.startOfWeek;
         var days = [];
@@ -294,11 +285,14 @@ export class AddTimesheetComponent implements OnInit {
         //console.log(self.startOfWeek)
         //console.log(self.endOfWeek)
         while (day <= self.endOfWeek) {
-          let m = moment(day.toDate()).utcOffset(0);
-          m.set({ hour: 0, minute: 0, second: 0, millisecond: 0 })
+          //let m = moment(day.toDate()).utcOffset(0);
+          //m.set({ hour: 0, minute: 0, second: 0, millisecond: 0 })
+          //console.log(this.timesheetData);
+          //console.log( moment(day.toDate()).format('MM/DD/YYYY'));
           switch (day.days()) {
             case 1:
-              let mon = _.find(this.timesheetData, function (o) { return o.date == m.toISOString() });
+              let mon = _.find(this.timesheetData, function (o) { return moment(o.date).format('MM/DD/YYYY') == moment(day.toDate()).format('MM/DD/YYYY') });
+              console.log(mon);
               if (Boolean(mon)) {
                 this.timesheet.patchValue({ mon: mon.regular_hours })
                 this.timesheet.patchValue({ mono: mon.overtime_hours })
@@ -310,7 +304,7 @@ export class AddTimesheetComponent implements OnInit {
               }
               break;
             case 2:
-              let tue = _.find(this.timesheetData, function (o) { return o.date == m.toISOString() })
+              let tue = _.find(this.timesheetData, function (o) { return moment(o.date).format('MM/DD/YYYY') == moment(day.toDate()).format('MM/DD/YYYY') });
               if (Boolean(tue)) {
                 this.timesheet.patchValue({ tue: tue.regular_hours })
                 this.timesheet.patchValue({ tueo: tue.overtime_hours })
@@ -322,7 +316,7 @@ export class AddTimesheetComponent implements OnInit {
               }
               break;
             case 3:
-              let wed = _.find(this.timesheetData, function (o) { return o.date == m.toISOString() })
+              let wed = _.find(this.timesheetData, function (o) { return moment(o.date).format('MM/DD/YYYY') == moment(day.toDate()).format('MM/DD/YYYY') });
               if (Boolean(wed)) {
                 this.timesheet.patchValue({ wed: wed.regular_hours })
                 this.timesheet.patchValue({ wedo: wed.overtime_hours })
@@ -334,7 +328,7 @@ export class AddTimesheetComponent implements OnInit {
               }
               break;
             case 4:
-              let thu = _.find(this.timesheetData, function (o) { return o.date == m.toISOString() })
+              let thu = _.find(this.timesheetData, function (o) { return moment(o.date).format('MM/DD/YYYY') == moment(day.toDate()).format('MM/DD/YYYY') });
               if (Boolean(thu)) {
                 this.timesheet.patchValue({ thu: thu.regular_hours })
                 this.timesheet.patchValue({ thuo: thu.overtime_hours })
@@ -346,7 +340,7 @@ export class AddTimesheetComponent implements OnInit {
               }
               break;
             case 5:
-              let fri = _.find(this.timesheetData, function (o) { return o.date == m.toISOString() })
+              let fri = _.find(this.timesheetData, function (o) { return moment(o.date).format('MM/DD/YYYY') == moment(day.toDate()).format('MM/DD/YYYY') });
               if (Boolean(fri)) {
                 this.timesheet.patchValue({ fri: fri.regular_hours })
                 this.timesheet.patchValue({ frio: fri.overtime_hours })
@@ -358,7 +352,7 @@ export class AddTimesheetComponent implements OnInit {
               }
               break;
             case 6:
-              let sat = _.find(this.timesheetData, function (o) { return o.date == m.toISOString() })
+              let sat = _.find(this.timesheetData, function (o) { return moment(o.date).format('MM/DD/YYYY') == moment(day.toDate()).format('MM/DD/YYYY') });
               if (Boolean(sat)) {
                 this.timesheet.patchValue({ sat: sat.regular_hours })
                 this.timesheet.patchValue({ sato: sat.overtime_hours })
@@ -370,7 +364,7 @@ export class AddTimesheetComponent implements OnInit {
               }
               break;
             case 0:
-              let sun = _.find(this.timesheetData, function (o) { return o.date == m.toISOString() })
+              let sun = _.find(this.timesheetData, function (o) { return moment(o.date).format('MM/DD/YYYY') == moment(day.toDate()).format('MM/DD/YYYY') });
               if (Boolean(sun)) {
                 this.timesheet.patchValue({ sun: sun.regular_hours })
                 this.timesheet.patchValue({ suno: sun.overtime_hours })

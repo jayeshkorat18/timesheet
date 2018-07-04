@@ -261,11 +261,9 @@ export class WebserviceService {
   }
 
   //Upload document for timesheet
-  UploadTimesheetDocument(fileToUpload: File,user_id) {
+  UploadTimesheetDocument(fileToUpload: File,filename) {
     const URL = this.BASE_URL + 'containers/tekreliance/upload';
     const formData: FormData = new FormData();
-    let date=new Date();
-    let filename=user_id+'_'+(date.getMonth()+1)+'_'+date.getDate()+'_'+date.getFullYear();
     formData.append('file', fileToUpload, filename);
       return this.http.post(URL, formData).map(data => {
         return data.json();

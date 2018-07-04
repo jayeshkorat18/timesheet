@@ -22,6 +22,7 @@
             <th class="text-center nosort ">Date</th>
             <th class="text-center nosort">Regular Hours</th>
             <th class="text-center nosort">Overtime</th>
+            <th class="text-center nosort">Note</th>
             <th class="text-center nosort">Document</th>
             <th class="text-center nosort">Status</th>
             <th *ngIf="userDetail.user.myrole_id!=2" class="text-center nosort">Billed</th>
@@ -35,8 +36,9 @@
             <td class="text-center">{{ person.date | date:'MM/dd/yyyy' }}</td>
             <td class="text-center">{{ person.regular_hours }}</td>
             <td class="text-center">{{ person.overtime_hours }}</td>
+            <td class="">{{ person.notes }}</td>
             <td class="text-center">
-              <a href="{{ person.timesheet_image_name }}" target="_blank">Document Link</a>
+              <a href="{{downloadURL+person.timesheet_image_name }}" target="_blank">Document Link</a>
             </td>
             <td class="text-center">
               <div *ngIf="userDetail.user.myrole_id==2">

@@ -1,0 +1,11 @@
+<div *ngIf="text">
+  <div *ngIf="text.length <= limit">{{text}}</div>
+  <div *ngIf="truncating && text.length > limit">
+    {{text | truncate : limit}}
+    <a (click)="truncating = false">show more</a>
+  </div>
+  <div *ngIf="!truncating && text.length > limit">
+    {{text}}
+    <a (click)="truncating = true">show less</a>
+  </div>
+</div>

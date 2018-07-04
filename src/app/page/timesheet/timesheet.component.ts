@@ -16,6 +16,7 @@ import { WebserviceService } from '../../shared/service/webservice.service';
   styleUrls: ['./timesheet.component.scss']
 })
 export class TimesheetComponent implements OnInit {
+  public downloadURL:string='https://api-timesheets.herokuapp.com/api/containers/tekreliance/download/';
   modalRef: BsModalRef;
   config = {
     backdrop: true,
