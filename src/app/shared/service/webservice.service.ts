@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Http, RequestOptions, Headers } from '@angular/http';
+import { Http,RequestOptions, Headers } from '@angular/http';
+//import { HttpClient } from '@angular/common/http';
 import 'rxjs/add/operator/map';
 import { WebserviceHandlerService } from './webservice-handler.service';
 
@@ -257,5 +258,19 @@ export class WebserviceService {
     }, error => {
       return error;
     });
+  }
+
+  //Upload document for timesheet
+  UploadTimesheetDocument(fileToUpload: File,user_id) {
+    const URL = this.BASE_URL + 'containers/tekreliance/upload';
+    const formData: FormData = new FormData();
+    let date=new Date();
+    let filename=user_id+'_'+(date.getMonth()+1)+'_'+date.getDate()+'_'+date.getFullYear();
+    formData.append('file', fileToUpload, filename);
+      return this.http.post(URL, formData).map(data => {
+        return data.json();
+      }, error => {
+        return error;
+      });
   }
 }

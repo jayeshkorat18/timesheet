@@ -19,6 +19,13 @@
         <button type="button" (click)="nextWeek()" class="btn btn-success">Next week</button>
       </div>
     </div>
+    <!-- <div class="form-group">
+      <label for="file">Choose File</label>
+      <input type="file"
+             id="file"
+             (change)="handleFileInput($event.target.files)">
+  </div>
+  <button (click)="uploadFileToActivity()">Click</button> -->
     <form [formGroup]="timesheet" (submit)="testsubmit(timesheet)">
       <div class="row margin-top-30">
         <div class="col-lg-3 text-right">
@@ -114,7 +121,9 @@
         <div class="col-lg-2">
           <!-- <button type="button" class="btn btn-outline-info btn-sm">Upload support docs</button> -->
           <label class="btn btn-default">
-              <input type="file" (change)="selectFile($event)">
+            <input type="file"
+            id="file"
+            (change)="handleFileInput($event.target.files)">
             </label>
         </div>
       </div>

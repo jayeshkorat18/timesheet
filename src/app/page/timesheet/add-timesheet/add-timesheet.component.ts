@@ -32,8 +32,10 @@ export class AddTimesheetComponent implements OnInit {
   accessKeyId: any;
   secretAccessKey: any;
   FOLDER = 'timesheets.angularjs/';
-  selectedFiles: FileList;
+  //selectedFiles: FileList;
   isDisable: any = {};
+  fileToUpload: File = null;
+
 
   constructor(private router: Router, public formBuilder: FormBuilder, private modalService: BsModalService, public common: CommonService, public service: WebserviceService) {
     this.userDetail = JSON.parse(localStorage.getItem('UserData'))
@@ -61,6 +63,20 @@ export class AddTimesheetComponent implements OnInit {
   ngOnInit() {
   }
 
+  handleFileInput(files: FileList) {
+    this.fileToUpload = files.item(0);
+  }
+  uploadFileToActivity() {
+    console.log(this.fileToUpload.name);
+
+    // this.service.UploadTimesheetDocument(this.fileToUpload).subscribe(data => {
+    //   console.log(JSON.stringify(data));
+    //   console.log(data.result.files.fle[0].name);
+    //   // do something, if upload success
+    // }, error => {
+    //   console.log(error);
+    // });
+  }
   //File upload start
   getS3Detail() {
     this.service.GetS3Detail().subscribe((result) => {
@@ -75,37 +91,15 @@ export class AddTimesheetComponent implements OnInit {
     })
   }
 
-  selectFile(event) {
-    this.selectedFiles = event.target.files;
-  }
-
   //Timesheet start
   testsubmit(timesheet) {
     console.log(timesheet.value);
-    if (Boolean(this.selectedFiles)) {
-      const file = this.selectedFiles.item(0);
-      const bucket = new S3(
-        {
-          accessKeyId: this.accessKeyId,
-          secretAccessKey: this.secretAccessKey,
-          region: 'us-east-2'
-        }
-      );
-      const params = {
-        Bucket: 'timesheets.tekreliance.com',
-        Key: this.FOLDER + Date.now() + '_' + file.name,
-        Body: file
-      };
+    if (Boolean(this.fileToUpload)) {
       let self = this;
       self.common.ShowSpinner();
-      bucket.upload(params, function (err, data) {
-
-        if (err) {
-          console.log('There was an error uploading your file: ', err);
-          self.common.showToast('There was an error uploading your file', 'Error', 'error');
-          self.common.HideSpinner();
-          return false;
-        } else {
+      
+      this.service.UploadTimesheetDocument(this.fileToUpload,self.userDetail.user.id).subscribe(data => {
+        if (data.result.files.file[0].name) {
           console.log('Successfully uploaded file.', data);
           var days = [];
           var day = self.startOfWeek;
@@ -162,7 +156,7 @@ export class AddTimesheetComponent implements OnInit {
                 date: date,
                 regular_hours: rhours,
                 overtime_hours: ohours,
-                timesheet_image_name: data.Location,
+                timesheet_image_name: data.result.files.file[0].name,
                 client_id: 1,
                 account_id: self.userDetail.user.id,
                 notes: timesheet.value.notes
@@ -186,8 +180,10 @@ export class AddTimesheetComponent implements OnInit {
             console.log(error)
             self.common.HideSpinner();
           })
-
-          return true;
+        }else {
+          console.log('There was an error uploading your file: ');
+          self.common.showToast('There was an error uploading your file', 'Error', 'error');
+          self.common.HideSpinner();
         }
       });
     } else {
@@ -307,7 +303,7 @@ export class AddTimesheetComponent implements OnInit {
                 this.timesheet.patchValue({ mon: mon.regular_hours })
                 this.timesheet.patchValue({ mono: mon.overtime_hours })
                 this.isDisable.mon = mon.status;
-              }else{
+              } else {
                 this.timesheet.patchValue({ mon: '' })
                 this.timesheet.patchValue({ mono: '' })
                 this.isDisable.mon = 1;
@@ -319,7 +315,7 @@ export class AddTimesheetComponent implements OnInit {
                 this.timesheet.patchValue({ tue: tue.regular_hours })
                 this.timesheet.patchValue({ tueo: tue.overtime_hours })
                 this.isDisable.tue = tue.status;
-              }else{
+              } else {
                 this.timesheet.patchValue({ tue: '' })
                 this.timesheet.patchValue({ tueo: '' })
                 this.isDisable.tue = 1;
@@ -331,7 +327,7 @@ export class AddTimesheetComponent implements OnInit {
                 this.timesheet.patchValue({ wed: wed.regular_hours })
                 this.timesheet.patchValue({ wedo: wed.overtime_hours })
                 this.isDisable.wed = wed.status;
-              }else{
+              } else {
                 this.timesheet.patchValue({ wed: '' })
                 this.timesheet.patchValue({ wedo: '' })
                 this.isDisable.wed = 1;
@@ -343,7 +339,7 @@ export class AddTimesheetComponent implements OnInit {
                 this.timesheet.patchValue({ thu: thu.regular_hours })
                 this.timesheet.patchValue({ thuo: thu.overtime_hours })
                 this.isDisable.thu = thu.status;
-              }else{
+              } else {
                 this.timesheet.patchValue({ thu: '' })
                 this.timesheet.patchValue({ thuo: '' })
                 this.isDisable.thu = 1;
@@ -355,7 +351,7 @@ export class AddTimesheetComponent implements OnInit {
                 this.timesheet.patchValue({ fri: fri.regular_hours })
                 this.timesheet.patchValue({ frio: fri.overtime_hours })
                 this.isDisable.fri = fri.status;
-              }else{
+              } else {
                 this.timesheet.patchValue({ fri: '' })
                 this.timesheet.patchValue({ frio: '' })
                 this.isDisable.fri = 1;
@@ -367,7 +363,7 @@ export class AddTimesheetComponent implements OnInit {
                 this.timesheet.patchValue({ sat: sat.regular_hours })
                 this.timesheet.patchValue({ sato: sat.overtime_hours })
                 this.isDisable.sat = sat.status;
-              }else{
+              } else {
                 this.timesheet.patchValue({ sat: '' })
                 this.timesheet.patchValue({ sato: '' })
                 this.isDisable.sat = 1;
@@ -379,7 +375,7 @@ export class AddTimesheetComponent implements OnInit {
                 this.timesheet.patchValue({ sun: sun.regular_hours })
                 this.timesheet.patchValue({ suno: sun.overtime_hours })
                 this.isDisable.sun = sun.status;
-              }else{
+              } else {
                 this.timesheet.patchValue({ sun: '' })
                 this.timesheet.patchValue({ suno: '' })
                 this.isDisable.sun = 1;
