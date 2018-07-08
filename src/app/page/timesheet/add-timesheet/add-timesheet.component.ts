@@ -129,9 +129,9 @@ export class AddTimesheetComponent implements OnInit {
           
           let currentData = _.find(self.timesheetData, function (o) { return moment(o.date).format('MM/DD/YYYY') == moment(day.toDate()).format('MM/DD/YYYY') });
           let isApproved = false;
-          //console.log(currentData);
+          console.log(currentData);
           if (Boolean(currentData)) {
-            isApproved = currentData.status == 1 ? false : true;
+            isApproved = currentData.status == 2 ? true : false;
           }
           if ((rhours != 0 || ohours != 0) && date <= moment().format('MM/DD/YYYY') && !isApproved) {
             requestData.push({
